@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        分布式数据库的DDL实现 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/favicon.ico">
+        </div>
+        <div class="name">
+            <i>principality</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL在线操作的场景"><span class="toc-text">DDL在线操作的场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL在线操作实现的思路"><span class="toc-text">DDL在线操作实现的思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#约束"><span class="toc-text">约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据一致性"><span class="toc-text">数据一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#并发操作"><span class="toc-text">并发操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能"><span class="toc-text">性能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充材料"><span class="toc-text">补充材料</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-DDL的锁级别"><span class="toc-text">MySQL DDL的锁级别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        分布式数据库的DDL实现
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-11-03 17:24:22</span></span>
+        
+        
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>DDL在线操作的场景</li>
+<li>DDL在线操作实现的思路</li>
+<li>补充材料</li>
+<li>附录</li>
+</ul>
+<h2 id="DDL在线操作的场景"><a href="#DDL在线操作的场景" class="headerlink" title="DDL在线操作的场景"></a>DDL在线操作的场景</h2><p>最近在考虑KtSQL的索引实现，涉及到在线索引新建的思考。<br>如果要求系统在表创建时，就建立合理的索引格式，这是不符合实际情况的。所以索引建立存在运行后重建的需求。</p>
+<p>索引的重建需要允许在线，对一个大规模的在线服务系统而言，停机是不允许的。</p>
+<h2 id="DDL在线操作实现的思路"><a href="#DDL在线操作实现的思路" class="headerlink" title="DDL在线操作实现的思路"></a>DDL在线操作实现的思路</h2><h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><ul>
+<li>数据一致性</li>
+<li>并发操作</li>
+<li>性能</li>
+</ul>
+<h3 id="数据一致性"><a href="#数据一致性" class="headerlink" title="数据一致性"></a>数据一致性</h3><p>索引建立过程中，如果允许数据变更（DELETE、UPDATE、INSERT），会导致索引和数据的不一致性，<br>所以数据库的常规做法，是对需要建立索引的表进行锁定，只允许查询，直到索引建立完毕后，才允许解除锁定。</p>
+<h3 id="并发操作"><a href="#并发操作" class="headerlink" title="并发操作"></a>并发操作</h3><p>既然要实现DDL在线操作，分布式的环境下，必须要考虑操作的并发性，最直接的做法自然是操作串行。<br>对一个表进行串行修改，可以用锁机制来实现。</p>
+<p>不同于DML可以采用MVCC和统一事务服务做隔离，DDL会对分布节点都产生影响。所以DDL操作时，<br>需要获得操作目标的锁才能进行操作。</p>
+<p>锁的粒度决定了运行的性能，如只需要锁定元数据而不需要对表进行锁定，但是也不必过度追求并发，<br>如对表先拷贝后全量处理，再锁定原表增量处理的做法，就是很消耗资源的做法。</p>
+<p>元数据和表数据可以分离，好处是对元数据锁定并进行操作时，DML依然可以运行。</p>
+<p>HBase对表进行操作的时候，会先disable table。这个过程会关闭掉所有region server的handler，<br>HBase对元数据操作的方式，影响到并发操作的具体实现。</p>
+<p>MySQL采用分级锁机制对数据请求进行分级：</p>
+<ul>
+<li>LOCK=NONE: Permits concurrent queries and DML.</li>
+<li>LOCK=SHARED: Permits concurrent queries but blocks DML.</li>
+<li>LOCK=DEFAULT: Permits as much concurrency as possible (concurrent queries, DML, or both). </li>
+<li>LOCK=EXCLUSIVE: Blocks concurrent queries and DML.</li>
+</ul>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>假如需要对10亿的数据进行索引创建，共100个节点，则单个节点需要处理对千万级数据进行处理。<br>同时要生成10亿的数据记录，引发的网络通信和读写操作都将是很大的消耗。</p>
+<h2 id="补充材料"><a href="#补充材料" class="headerlink" title="补充材料"></a>补充材料</h2><h3 id="MySQL-DDL的锁级别"><a href="#MySQL-DDL的锁级别" class="headerlink" title="MySQL DDL的锁级别"></a>MySQL DDL的锁级别</h3><p>假设要进行DDL，必须要执行锁的话，哪一种锁级别是在保证逻辑正确性的前提下性能最好的？MySQL整理了一些可以参考的思路。</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>In-Place?</th>
+<th>Copies Table?</th>
+<th>Allows Concurrent DML?</th>
+<th>Allows Concurrent Query?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加索引</td>
+<td>Yes*</td>
+<td>No*</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>对全文索引的一些限制</td>
+</tr>
+<tr>
+<td>删除索引</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>仅修改表的元数据</td>
+</tr>
+<tr>
+<td>OPTIMIZE TABLE</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>从 5.6.17开始使用ALGORITHM=INPLACE，当然如果指定了old_alter_table=1或mysqld启动带–skip-new则将还是COPY模式。如果表上有全文索引只支持COPY</td>
+</tr>
+<tr>
+<td>对一列设置默认值</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>仅修改表的元数据</td>
+</tr>
+<tr>
+<td>对一列修改auto-increment 的值</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>仅修改表的元数据</td>
+</tr>
+<tr>
+<td>添加 foreign key constraint</td>
+<td>Yes*</td>
+<td>No*</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>为了避免拷贝表，在约束创建时会禁用foreign_key_checks</td>
+</tr>
+<tr>
+<td>删除 foreign key constraint</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>foreign_key_checks 不影响</td>
+</tr>
+<tr>
+<td>改变列名</td>
+<td>Yes*</td>
+<td>No*</td>
+<td>Yes*</td>
+<td>Yes</td>
+<td>为了允许DML并发, 如果保持相同数据类型，仅改变列名</td>
+</tr>
+<tr>
+<td>添加列</td>
+<td>Yes*</td>
+<td>Yes*</td>
+<td>Yes*</td>
+<td>Yes</td>
+<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作。当添加列是auto-increment，不允许DML并发</td>
+</tr>
+<tr>
+<td>删除列</td>
+<td>Yes</td>
+<td>Yes*</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
+</tr>
+<tr>
+<td>修改列数据类型</td>
+<td>No</td>
+<td>Yes*</td>
+<td>No</td>
+<td>Yes</td>
+<td>修改类型或添加长度，都会拷贝表，而且不允许更新操作</td>
+</tr>
+<tr>
+<td>更改列顺序</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
+</tr>
+<tr>
+<td>修改ROW_FORMAT和KEY_BLOCK_SIZE</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
+</tr>
+<tr>
+<td>设置列属性NULL或NOT NULL</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
+</tr>
+<tr>
+<td>添加主键</td>
+<td>Yes*</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作。如果列定义必须转化NOT NULL，则不允许INPLACE</td>
+</tr>
+<tr>
+<td>删除并添加主键</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>在同一个 ALTER TABLE 语句删除就主键、添加新主键时，才允许inplace；数据大幅重组,所以它仍然是一项昂贵的操作。</td>
+</tr>
+<tr>
+<td>删除主键</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>不允许并发DML，要拷贝表，而且如果没有在同一 ATLER TABLE 语句里同时添加主键则会收到限制</td>
+</tr>
+<tr>
+<td>变更表字符集</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>如果新的字符集编码不同，重建表</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://support.sas.com/resources/papers/proceedings13/072-2013.pdf" target="_blank" rel="noopener">SAS-Oracle Options and Efficiency: What You Don’t Know Can Hurt You</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-performance.html" target="_blank" rel="noopener">MySQL Online DDL Performance and Concurrency</a></li>
+<li><a href="http://punishzhou.iteye.com/blog/1258825" target="_blank" rel="noopener">HBase disable table的过程</a></li>
+<li><a href="http://www.dba-oracle.com/t_concurrent_dml_ddl.htm" target="_blank" rel="noopener">Concurrent DML &amp; DDL Tips</a></li>
+<li><a href="http://seanlook.com/2016/05/24/mysql-online-ddl-concept/" target="_blank" rel="noopener">mysql 5.6 原生Online DDL解析</a></li>
+</ul>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

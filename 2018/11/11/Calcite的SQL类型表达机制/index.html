@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Calcite的SQL类型表达机制 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/favicon.ico">
+        </div>
+        <div class="name">
+            <i>principality</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分布式数据库与系统设计"><span class="toc-text">分布式数据库与系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何在KtSQL中拓展一个类型的支持"><span class="toc-text">如何在KtSQL中拓展一个类型的支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite的类型系统设计思路"><span class="toc-text">Calcite的类型系统设计思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Calcite的SQL类型表达机制
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-11-11 11:24:45</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#Calcite" title="Calcite">Calcite</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#SQL类型" title="SQL类型">SQL类型</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>分布式数据库与系统设计</li>
+<li>如何在KtSQL中拓展一个类型的支持</li>
+<li>Calcite的类型系统设计思路</li>
+<li>附录</li>
+</ul>
+<h2 id="分布式数据库与系统设计"><a href="#分布式数据库与系统设计" class="headerlink" title="分布式数据库与系统设计"></a>分布式数据库与系统设计</h2><p>对数据的处理，如果需要在应用层考虑底层的分布模型及实现，就会造成应用层的复杂度上升。比如，把汽车的位置存储到分布式数据库中，并获取距离A点最近的100辆汽车，把数据库里面所有的数据取出来计算，这样的做法是不可取的。分布式数据库除应当解决数据规模带来的存储挑战外，还应该简化数据的处理模型。</p>
+<p>在上述的例子中，把坐标转换成可以计算的数据类型，并以此类型作为检索主键，将会大大加速处理的速度。我们知道，用GEOHASH可以把多维坐标位置转换成单值并作为主键，可以获得很好的数据处理速度。</p>
+<p>由此可见，要在大规模数据的前提下，获得良好的数据处理能力，我们需要以下元素：</p>
+<ul>
+<li>可以把数据转换成底层系统可以处理的数值类型</li>
+<li>支持对数值类型的索引，以便提升处理的速度</li>
+<li>底层系统支持分布式处理的计算能力，从而获得计算能力的提升</li>
+</ul>
+<h2 id="如何在KtSQL中拓展一个类型的支持"><a href="#如何在KtSQL中拓展一个类型的支持" class="headerlink" title="如何在KtSQL中拓展一个类型的支持"></a>如何在KtSQL中拓展一个类型的支持</h2><p>KtSQL通过以下三个设计来获得良好的数据处理能力：</p>
+<ul>
+<li>在SQL引擎层支持自定义函数，可以实现数据类型的转换</li>
+<li>支持主键索引、二次索引的机制</li>
+<li>通过对存储层计算下推能力的扩展，获得分布式处理能力</li>
+</ul>
+<p>引擎层支持的数值类型，直接影响着下层的具体实现。下面对SQL引擎层Calcite的类型系统设计思路进行阐述，以满足将来可能需要的各种扩展。</p>
+<h2 id="Calcite的类型系统设计思路"><a href="#Calcite的类型系统设计思路" class="headerlink" title="Calcite的类型系统设计思路"></a>Calcite的类型系统设计思路</h2><p>Calcite支持SQL2003中定义的数值类型。KtSQL前端现采取兼容MySQL协议的方式实现，也就意味着Calcite的类型系统需要具备从MySQL类型转换到Calcite类型的能力。同时，下层存储以Binary格式进行存储，不具备类型能力，这意味着Calcite的类型系统能够进行类型转换，并且具备元数据的能力。Calcite用Java实现，如果要实现类型转换成到runtime可以处理的类型，还需具备转换到Java类型系统的能力。</p>
+<p>Calcite使用以下类来表达类型系统：</p>
+<ul>
+<li>SqlLiteral：在解析SQL语句的过程中，用来表达类型的类。</li>
+<li>SqlTypeName：SQL语句中支持的类型，SQL2003标准中，列举的需要支持的类型超过了Java语言中定义的SQL基础类型。</li>
+<li>SqlTypeFamily：SqlType类型分类的枚举，定义了支持的类型分类。支持JdbcType里面的类型与SqlType进行相互转换。</li>
+<li>RelDataTypeSystem：类型描述类系统，SqlTypeName的辅助类，如获取精度、长度、是否自增等属性。</li>
+<li>RelDataType：类型描述类，用于描述一个算式或查询返回的一行的类型，即可以用于描述一个或多个的SqlType。RelDataType支持持久化，支持枚举组成RelDataType的每一个元素的类型。</li>
+<li>RelDataTypeFactory：类型描述类工厂，支持从一个Clazz获取对应的RelDataType，支持从SqlType转换为RelDataType。</li>
+</ul>
+<p>RelDataType是类型的描述类，借助TypeSystem、TypeName、TypeFamily，RelDatType获得了元数据的能力，通过RelDataTypeFactory，可以实现不同的类型转换。SqlLiteral是SQL描述，提供了变量的最初的信息。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2>
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

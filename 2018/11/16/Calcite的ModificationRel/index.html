@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Calcite的ModificationRel - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/favicon.ico">
+        </div>
+        <div class="name">
+            <i>principality</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite实现DML操作的概述"><span class="toc-text">Calcite实现DML操作的概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite-DML操作的详解"><span class="toc-text">Calcite DML操作的详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DML相关功能对应模块"><span class="toc-text">DML相关功能对应模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询select的实现流程"><span class="toc-text">查询select的实现流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改操作的实现流程"><span class="toc-text">修改操作的实现流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toModificationRel"><span class="toc-text">toModificationRel</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite-DML的性能及未来的优化思路"><span class="toc-text">Calcite DML的性能及未来的优化思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Calcite的ModificationRel
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-11-16 21:50:56</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#Calcite" title="Calcite">Calcite</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#DML" title="DML">DML</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>Calcite实现DML操作的概述</li>
+<li>Calcite DML操作的详解</li>
+<li>Calcite DML的性能及未来的优化思路</li>
+<li>附录</li>
+</ul>
+<h2 id="Calcite实现DML操作的概述"><a href="#Calcite实现DML操作的概述" class="headerlink" title="Calcite实现DML操作的概述"></a>Calcite实现DML操作的概述</h2><p>Calcite使用javacc生成语法解析器，javacc和freemaker模版技术为解析器的自定义提供了可能，SQL语句经过解析后，生成SqlNode，然后通过convertQuery转换成RelNode。RelNode用于表达逻辑表达式，也用于优化执行树，最后的RelNode逻辑树生成后，转成Expression(Node)，Expression具备转换成java代码的能力，然后再通过JinanoCompiler转换成字节码执行。这是三次解析一次编译的执行过程。</p>
+<p>SqlNode转换成RelNode的时候，会补充上下文，所以RelNode包含丰富的相关信息，可用于执行计划的优化。但是RelNode转换成Expression时，很多上下文信息是无用的，会被丢弃。</p>
+<p>Calcite内置了EnumerableConvention用于实现SQL的查询语句，Expression在转换成java代码时，使用Enumerable表达SQL语句的相关操作，对于不能全面支持SQL操作的adaptor，借助转换成Enumerable，是保证adaptor能全面支持SQL操作的关键。那么存储层只需要实现数据读写即可满足SQL的DML操作。</p>
+<h2 id="Calcite-DML操作的详解"><a href="#Calcite-DML操作的详解" class="headerlink" title="Calcite DML操作的详解"></a>Calcite DML操作的详解</h2><h3 id="DML相关功能对应模块"><a href="#DML相关功能对应模块" class="headerlink" title="DML相关功能对应模块"></a>DML相关功能对应模块</h3><p>概述环节对主要流程进行了描述，现对各流程中，DML操作的过程使用到的模块进行说明。</p>
+<p>ModifiableTable赋予了Table查询和修改的能力，ModifiableTable继承QueryableTable，Queryable继承Enumerable，Queryable提供了数据的查询能力。也就是说，当需要select的时候，QueryableTable会被调用；而insert/update/delete时，ModifiableTable会被调用。</p>
+<h3 id="查询select的实现流程"><a href="#查询select的实现流程" class="headerlink" title="查询select的实现流程"></a>查询select的实现流程</h3><p>在查询(select)时，有两种查询数据的方法，分别是：Schemas.queryable和Schemas.enumerable</p>
+<p>Schemas.queryable会调用table.asQueryable，把需要查询的数据转换成Enumerable，这时的操作，需要table adaptor实现接口table.asQueryable</p>
+<p>Schemas.enumerable会调用table.scan，把数据从table中读出来，这时的操作，需要table adaptor实现接口table.scan</p>
+<p>具体采用哪种(queryable/enumerable)转换的方式，是在RelOptTableImpl.getClassExpressionFunction中实现的，做计划优化的时候(Prepare.optimize)，RelNode.optimize会调用RelOptTableImpl.create，RelOptTableImpl.create会调用RelOptTableImpl.getClassExpressionFunction来完成转化，queryable此时调用getExpression作为参数传给RetOptTableImpl，而enumerable调用Schemas.tableExpression</p>
+<h3 id="修改操作的实现流程"><a href="#修改操作的实现流程" class="headerlink" title="修改操作的实现流程"></a>修改操作的实现流程</h3><p>在修改时，Insert语句从SqlNode转换到RelNode，再转换到Expression。</p>
+<ul>
+<li><p>parseQuery</p>
+<ul>
+<li>values(…)在sql parse的时候，会被转换成为row(…)，表示一个结构体类型</li>
+</ul>
+</li>
+<li><p>convertQuery</p>
+<ul>
+<li>validate，SqlValidatorImpl会执行操作值数量检查checkFieldCount、操作值类型检查checkTypeAssignment、约束检查checkConstraint、权限检查validateAccess，依赖adaptor getRowType的实现</li>
+<li>convert，convertInsert会调用createModify，toModificationRel被调用，用于获取adaptor的上下文并保存到RelNode中。KtSQL只需要获得table的实例即可包含所需的上下文</li>
+<li>optimize，convert返回的是LogicTableModify，经过optimize后，变成了EnumerableTableModify。optimize会把传进去的RelNode都转成EnumerableRel，才能和下一环节的implement对接</li>
+</ul>
+</li>
+<li><p>implement</p>
+<ul>
+<li>EnumerableInterpretable.toBindable被调用，Calcite系统允许提供多个Implementor，且每个Implementor对节点的解析机制可以不一样，默认的实现是EnumerableInterpretable。通过遍历每一个节点的implement，生成Bindable返回。</li>
+<li>RelNode需要被转换为Bindable执行，Bindable继承InterpretableRel，包含implement接口，实现该接口的Bindable，可以返回Java代码。EnumerableTableModify.implement就是代码生成的一个例子，根据需要调用的函数，输出相应的字符串。</li>
+<li>Bindable的子类包括有：BindableAggregate, BindableFilter, BindableProject, BindableJoin, BindableSort, BindableTableScan, BindableUnion, BindableValues, BindableWindow, EnumerableBindable, EnumerableInterpretable. 所以可以需要实现代码输出的子类是可控的，可实现的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="toModificationRel"><a href="#toModificationRel" class="headerlink" title="toModificationRel"></a>toModificationRel</h3><p>RelNode在SqlToRelConverter的过程中，需要根据SqlNode的输入，生成特定的RelNode，adaptor的接口，需要按RelNode的需要，提供相关的信息。遗憾的是，这部分的说明，Calcite官方并没有给出很好的文档指引。</p>
+<p>toModificationRel会生成TableModify，在SqlToRelConverter中被调用，用于获取相关的上下文并保存到RelNode中，Interpreter调用TableModify最终会转换为EnumerableTableModify，并且在转换成执行的binary code时，调用getModifiableCollection()</p>
+<p>TableModify是RelNode的子类，用于把DML操作转换为Enumerable操作，并实现了TableModify转换到Expression的逻辑。</p>
+<p>继承于TableModify的EnumerableTableModify和JdbcTableModify，都实现了implement接口，但是两者的含义一样，实现并不一样。EnumerableTableModify扩展于EnumerableRel，但JdbcTableModify扩展于JdbcRel。</p>
+<p>Calcite对语法树的解析，支持通过实现RelImplementor接口，来获得不同的implementor的能力，在系统中，现在有两个实现，分别是JavaRelImplementor和EnumerableRelImplementor，</p>
+<h2 id="Calcite-DML的性能及未来的优化思路"><a href="#Calcite-DML的性能及未来的优化思路" class="headerlink" title="Calcite DML的性能及未来的优化思路"></a>Calcite DML的性能及未来的优化思路</h2><p>在现代计算机的单核CPU上，Calcite解析转换一条DML操作的耗时为毫秒级，对于需要复杂计算的select语句，转换的耗时是很小的。对于KtSQL的分布式架构来说，Calcite的SQL解析处理并不会成为瓶颈，反而是Enumerable的计算能力受限于CPU和内存。</p>
+<p>单机的数据库系统，受限于单机的计算机架构，只能满足百万级数据的快速处理。JVM受限于其实现机制，千万级的数据处理就需要消耗上百G的内存，如果要把计算能力提升到十亿级别，则对计算能力的优化提出了极大的挑战。数据量越小，主键和二次索引对操作的影响越大。随着数据量的上升，则基于二次索引和范围处理的优化显得越发重要。Spark tungsetn、Kylin的RoaringBitmapIndex、SnappyData的基数引擎，都是计算优化的极好案例。Enumerable的优化有多种思路，比如支持网络堆外内存读取、堆外内存计算、异构计算加速，都可以有效提升计算的能力。这是将来可以优化的方向，而且其优化的思路与最终需适应的场景息息相关。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="http://calcite.apache.org/docs/adapter.html#built-in-sql-implementation" target="_blank" rel="noopener">Apache Calcite built in sql implementation</a></li>
+<li><a href="https://arxiv.org/pdf/1802.10233.pdf" target="_blank" rel="noopener">Apache Calcite: A Foundational Framework for Optimized Query Processing Over Heterogeneous Data Sources</a></li>
+<li><a href="https://events.static.linuxfound.org/sites/events/files/slides/ApacheCon2016ChristianTzolov.v4.pdf" target="_blank" rel="noopener">Apache Calcite for Enabling SQL Access to NoSQL Data Systems</a></li>
+<li><a href="https://github.com/Stratio/cassandra-lucene-index" target="_blank" rel="noopener">Stratio’s Cassandra Lucene Index</a></li>
+<li><a href="https://databricks.com/blog/2015/04/28/project-tungsten-bringing-spark-closer-to-bare-metal.html" target="_blank" rel="noopener">Project Tungsten: Bringing Apache Spark Closer to Bare Metal</a></li>
+<li><a href="https://blog.bcmeng.com/post/kylin-distinct-count-global-dict.html" target="_blank" rel="noopener">Apache Kylin 精确去重和全局字典权威指南</a></li>
+<li><a href="http://cidrdb.org/cidr2017/papers/p28-mozafari-cidr17.pdf" target="_blank" rel="noopener">SnappyData: A Uniﬁed Cluster for Streaming, Transactions, and Interactive Analytics</a></li>
+</ul>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

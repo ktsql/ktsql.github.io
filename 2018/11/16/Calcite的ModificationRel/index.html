@@ -82,7 +82,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite实现DML操作的概述"><span class="toc-text">Calcite实现DML操作的概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite-DML操作的详解"><span class="toc-text">Calcite DML操作的详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DML相关功能对应模块"><span class="toc-text">DML相关功能对应模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询select的实现流程"><span class="toc-text">查询select的实现流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改操作的实现流程"><span class="toc-text">修改操作的实现流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toModificationRel"><span class="toc-text">toModificationRel</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite-DML的性能及未来的优化思路"><span class="toc-text">Calcite DML的性能及未来的优化思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite实现DML操作的概述"><span class="toc-text">Calcite实现DML操作的概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite-DML操作的详解"><span class="toc-text">Calcite DML操作的详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DML相关功能对应模块"><span class="toc-text">DML相关功能对应模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询select的实现流程"><span class="toc-text">查询select的实现流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改操作的实现流程"><span class="toc-text">修改操作的实现流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toModificationRel"><span class="toc-text">toModificationRel</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite-DML的性能及优化思路"><span class="toc-text">Calcite DML的性能及优化思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
 </div>
     
 </div>
@@ -136,7 +136,7 @@
         <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
 <li>Calcite实现DML操作的概述</li>
 <li>Calcite DML操作的详解</li>
-<li>Calcite DML的性能及未来的优化思路</li>
+<li>Calcite DML的性能及优化思路</li>
 <li>附录</li>
 </ul>
 <h2 id="Calcite实现DML操作的概述"><a href="#Calcite实现DML操作的概述" class="headerlink" title="Calcite实现DML操作的概述"></a>Calcite实现DML操作的概述</h2><p>Calcite使用javacc生成语法解析器，javacc和freemaker模版技术为解析器的自定义提供了可能，SQL语句经过解析后，生成SqlNode，然后通过convertQuery转换成RelNode。RelNode用于表达逻辑表达式，也用于优化执行树，最后的RelNode逻辑树生成后，转成Expression(Node)，Expression具备转换成java代码的能力，然后再通过JinanoCompiler转换成字节码执行。这是三次解析一次编译的执行过程。</p>
@@ -175,7 +175,7 @@
 <p>TableModify是RelNode的子类，用于把DML操作转换为Enumerable操作，并实现了TableModify转换到Expression的逻辑。</p>
 <p>继承于TableModify的EnumerableTableModify和JdbcTableModify，都实现了implement接口，但是两者的含义一样，实现并不一样。EnumerableTableModify扩展于EnumerableRel，但JdbcTableModify扩展于JdbcRel。</p>
 <p>Calcite对语法树的解析，支持通过实现RelImplementor接口，来获得不同的implementor的能力，在系统中，现在有两个实现，分别是JavaRelImplementor和EnumerableRelImplementor，</p>
-<h2 id="Calcite-DML的性能及未来的优化思路"><a href="#Calcite-DML的性能及未来的优化思路" class="headerlink" title="Calcite DML的性能及未来的优化思路"></a>Calcite DML的性能及未来的优化思路</h2><p>在现代计算机的单核CPU上，Calcite解析转换一条DML操作的耗时为毫秒级，对于需要复杂计算的select语句，转换的耗时是很小的。对于KtSQL的分布式架构来说，Calcite的SQL解析处理并不会成为瓶颈，反而是Enumerable的计算能力受限于CPU和内存。</p>
+<h2 id="Calcite-DML的性能及优化思路"><a href="#Calcite-DML的性能及优化思路" class="headerlink" title="Calcite DML的性能及优化思路"></a>Calcite DML的性能及优化思路</h2><p>在现代计算机的单核CPU上，Calcite解析转换一条DML操作的耗时为毫秒级，对于需要复杂计算的select语句，转换的耗时是很小的。对于KtSQL的分布式架构来说，Calcite的SQL解析处理并不会成为瓶颈，反而是Enumerable的计算能力受限于CPU和内存。</p>
 <p>单机的数据库系统，受限于单机的计算机架构，只能满足百万级数据的快速处理。JVM受限于其实现机制，千万级的数据处理就需要消耗上百G的内存，如果要把计算能力提升到十亿级别，则对计算能力的优化提出了极大的挑战。数据量越小，主键和二次索引对操作的影响越大。随着数据量的上升，则基于二次索引和范围处理的优化显得越发重要。Spark tungsetn、Kylin的RoaringBitmapIndex、SnappyData的基数引擎，都是计算优化的极好案例。Enumerable的优化有多种思路，比如支持网络堆外内存读取、堆外内存计算、异构计算加速，都可以有效提升计算的能力。这是将来可以优化的方向，而且其优化的思路与最终需适应的场景息息相关。</p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
 <li><a href="http://calcite.apache.org/docs/adapter.html#built-in-sql-implementation" target="_blank" rel="noopener">Apache Calcite built in sql implementation</a></li>

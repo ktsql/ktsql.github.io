@@ -82,7 +82,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分布式数据库与系统设计"><span class="toc-text">分布式数据库与系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何在KtSQL中拓展一个类型的支持"><span class="toc-text">如何在KtSQL中拓展一个类型的支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite的类型系统设计思路"><span class="toc-text">Calcite的类型系统设计思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分布式数据库与系统设计"><span class="toc-text">分布式数据库与系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在KtSQL中拓展一个类型的支持"><span class="toc-text">在KtSQL中拓展一个类型的支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calcite的类型系统设计思路"><span class="toc-text">Calcite的类型系统设计思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
 </div>
     
 </div>
@@ -135,7 +135,7 @@
     <div class="post-content ">
         <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
 <li>分布式数据库与系统设计</li>
-<li>如何在KtSQL中拓展一个类型的支持</li>
+<li>在KtSQL中拓展一个类型的支持</li>
 <li>Calcite的类型系统设计思路</li>
 <li>附录</li>
 </ul>
@@ -147,7 +147,7 @@
 <li>支持对数值类型的索引，以便提升处理的速度</li>
 <li>底层系统支持分布式处理的计算能力，从而获得计算能力的提升</li>
 </ul>
-<h2 id="如何在KtSQL中拓展一个类型的支持"><a href="#如何在KtSQL中拓展一个类型的支持" class="headerlink" title="如何在KtSQL中拓展一个类型的支持"></a>如何在KtSQL中拓展一个类型的支持</h2><p>KtSQL通过以下三个设计来获得良好的数据处理能力：</p>
+<h2 id="在KtSQL中拓展一个类型的支持"><a href="#在KtSQL中拓展一个类型的支持" class="headerlink" title="在KtSQL中拓展一个类型的支持"></a>在KtSQL中拓展一个类型的支持</h2><p>KtSQL通过以下三个设计来获得良好的数据处理能力：</p>
 <ul>
 <li>在SQL引擎层支持自定义函数，可以实现数据类型的转换</li>
 <li>支持主键索引、二次索引的机制</li>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        KtSQL的BitmapInvertedIndex - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/favicon.ico">
+        </div>
+        <div class="name">
+            <i>principality</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引入Bitmap倒排索引"><span class="toc-text">引入Bitmap倒排索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BitmapInvertedIndex"><span class="toc-text">BitmapInvertedIndex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KtSQL的实现思路"><span class="toc-text">KtSQL的实现思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-text">附录</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        KtSQL的BitmapInvertedIndex
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-11-26 00:04:31</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#KtSQL" title="KtSQL">KtSQL</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#BitmapInvertedIndex" title="BitmapInvertedIndex">BitmapInvertedIndex</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>引入Bitmap倒排索引</li>
+<li>BitmapInvertedIndex</li>
+<li>KtSQL的实现思路</li>
+<li>附录</li>
+</ul>
+<h2 id="引入Bitmap倒排索引"><a href="#引入Bitmap倒排索引" class="headerlink" title="引入Bitmap倒排索引"></a>引入Bitmap倒排索引</h2><p>多维查询支持对于复杂化查询是一项必备的功能，KtSQL在设计时，则把复杂化查询作为一项核心特性考虑到系统实现中。对于以实时小批量查询为主要应用场景的事务型数据库，bitmap索引自然成为首选的对象之一。</p>
+<p>复杂查询中，bitmap支持对某类对象的特性进行查询，如查询符合某些过滤条件的物品。bitmap还可以对多个集合间的关系进行处理，如进行or或and处理。bitmap还支持如TopN、contains、Total等操作，对于计算下推，这些功能都有极大的帮助。</p>
+<p>不同于bitmap是把多个维度值作为一个单值进行编码，倒排索引对每一个column的值进行编码。倒排索引帮忙我们把每一个列(column)的取值映射到编码后，建立起取值编码和对应的rowkey位置的关系。通过bitmap计算，即可快速得出取值对应的rowkey值。</p>
+<h2 id="BitmapInvertedIndex"><a href="#BitmapInvertedIndex" class="headerlink" title="BitmapInvertedIndex"></a>BitmapInvertedIndex</h2><p>BitmapInvertedIndex在OLAP是较常见的，业界有名的案例是apache druid, linkedin pinot。</p>
+<p>Pinot BitmapInvertedIndex的实现细节描述如下：</p>
+<ol>
+<li>使用roaringbitmap作为底层的实现支持</li>
+<li>数据保存在文件上，inverted index存储的方式：|1st start|1st end|2nd end|…|data for 1st bitmap|data for 2nd bitmap|…</li>
+<li>支持保存在OnHeap和OffHeap，接口提供了addSingleColumn和addMultiColumn，参数为docId和dictId</li>
+<li>每一个column会创建一个InvertedIndexCreator，以OnHeapBitmapInvertedIndexCreator为例</li>
+<li>每个OnHeapBitmapInvertedIndexCreator包含一个MutableRoaringBitmap[]，用来保存每个column的bitmap array</li>
+<li>MutableRoaringBitmap支持serialize写到stream</li>
+</ol>
+<h2 id="KtSQL的实现思路"><a href="#KtSQL的实现思路" class="headerlink" title="KtSQL的实现思路"></a>KtSQL的实现思路</h2><p>参考Pinot的实现，先实现OnHeap模式，创建inverted index时，每个column创建一个bitmapInvertedIndex，采取实时构建的方式，通过适当牺牲入库的性能，避免复杂化数据的查询步骤，流程如下：</p>
+<ul>
+<li>将rowkey映射到array index中，把rowkey编码成唯一值，如取值为long，可以容纳 2^64 的数值</li>
+<li>不允许对建立了位图倒排索引的数据记录进行删除，也不允许对rowkey进行修改</li>
+<li>将每一个column的取值进行编码（依赖全局字典），对该取值维护一个队列，记录该值所在的rowkey对应的long值</li>
+<li>因为每个取值都会消耗掉一个array，所以column的取值越多，存储空间消耗越大。所以有观点提出column取值应该在10万以下，过多则不适合建立bitmap索引。</li>
+<li>全局字典表在分布式环境下，面临一个同步的问题，构建全局字典表。需考虑算法上支持特定值的编码在不同环境下取值一致是否可行，否则就需要用强一致的共享内存进行编码同步处理。</li>
+<li>位图倒排索引的数据保存在hbase中。在分布式环境下不同节点都需要访问同一份位图倒排索引，也需要维护数据和位图倒排索引的强一致性。这种处理方法也可避免在内存中过大。</li>
+</ul>
+<p>实时入库，会面临rowkey动态增加和column值编码持续增加的情况，也要面对分布式环境下编码一致性的问题</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="https://hexiaoqiao.github.io/blog/2016/11/27/exact-count-and-global-dictionary-of-apache-kylin/" target="_blank" rel="noopener">Apache Kylin精确计数与全局字典揭秘</a></li>
+<li><a href="http://druid.io/blog/2012/09/21/druid-bitmap-compression.html" target="_blank" rel="noopener">Maximum Performance with Minimum Storage: Data Compression in Druid</a></li>
+<li><a href="https://github.com/RoaringBitmap/RoaringFormatSpec/" target="_blank" rel="noopener">RoaringFormatSpec : specification of the compressed-bitmap Roaring format</a></li>
+</ul>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = ""
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

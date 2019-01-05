@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="KtSQL的呢喃">
 <meta property="og:description" content="目录 MySQL协议支持的思考 MySQL协议相关技术介绍 KtSQL的MySQL协议实现 附录  MySQL协议支持的思考随着互联网的发展，MySQL毫无疑问已经成为OLTP的标准，这个从DB Engine Rank的排名就可以轻易看出来。这是一个很有意思的现象，开源技术如果可以伴随新行业的发展而成长，则可以长大到一个无可估量的高度。闲话扯一下，做开源的各位，是不是应该考虑一下和新趋势结合一下，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-05T06:51:37.042Z">
+<meta property="og:updated_time" content="2019-01-05T10:04:22.435Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL协议流程笔记">
 <meta name="twitter:description" content="目录 MySQL协议支持的思考 MySQL协议相关技术介绍 KtSQL的MySQL协议实现 附录  MySQL协议支持的思考随着互联网的发展，MySQL毫无疑问已经成为OLTP的标准，这个从DB Engine Rank的排名就可以轻易看出来。这是一个很有意思的现象，开源技术如果可以伴随新行业的发展而成长，则可以长大到一个无可估量的高度。闲话扯一下，做开源的各位，是不是应该考虑一下和新趋势结合一下，">
@@ -349,14 +349,14 @@
 <h2 id="MySQL协议支持的思考"><a href="#MySQL协议支持的思考" class="headerlink" title="MySQL协议支持的思考"></a>MySQL协议支持的思考</h2><p>随着互联网的发展，MySQL毫无疑问已经成为OLTP的标准，这个从DB Engine Rank的排名就可以轻易看出来。这是一个很有意思的现象，开源技术如果可以伴随新行业的发展而成长，则可以长大到一个无可估量的高度。闲话扯一下，做开源的各位，是不是应该考虑一下和新趋势结合一下，成为新趋势的推动力呢？</p>
 <p>数据库的迁移成本是昂贵的，这也是为什么去IOE这么困难的原因。虽然节约成本是每个客户都希望得到的，但是应用对数据库的深度依赖让迁移成本远高于节约的成本，导致数据库无法迁移。如果无法迁移意味着技术落后，这将是难以忍受的结果。</p>
 <p>支持MySQL协议正是基于这样的想法而坚定下来的。降低迁移成本，让原有的数据库使用者可以低成本迁移到KtSQL，是兼容MySQL协议的意义。</p>
-<h2 id="MySQL协议相关技术介绍"><a href="#MySQL协议相关技术介绍" class="headerlink" title="MySQL协议相关技术介绍"></a>MySQL协议相关技术介绍</h2><p>分布式数据库一直依赖都存在两个实现方向。一个是在原有的数据库系统基础上，通过替换底层的存储引擎，通过存储引擎的分布式实现完成原有单机系统升级为分布式系统的改造，Amazon的Aurora就是典型例子；另一个是在SQL引擎层，实现对MySQL协议的支持，过往许多的MySQL分布式中间件都是采用这种方式。</p>
+<h2 id="MySQL协议相关技术介绍"><a href="#MySQL协议相关技术介绍" class="headerlink" title="MySQL协议相关技术介绍"></a>MySQL协议相关技术介绍</h2><p>分布式数据库一直以来都存在两个实现方向。一个是在原有的数据库系统基础上，通过替换底层的存储引擎，通过存储引擎的分布式实现完成原有单机系统升级为分布式系统的改造，Amazon的Aurora就是典型例子；另一个是在SQL引擎层，实现对SQL协议的支持，过往许多的MySQL分布式中间件都是采用这种方式。</p>
 <p>KtSQL选择的是后一种方式，出于以下几点考虑：</p>
 <ul>
 <li>为将来可能支持其他的协议做准备，Oracle、Postgres、SQL Server等</li>
 <li>突破数据库引擎的局限，为SQL引擎的创新做准备，如引入UDF</li>
 </ul>
 <p>从技术上来说，MySQL协议是一个TCP协议解包分发处理的逻辑，核心的两块是TCP服务和协议解包，这些都有成熟的类库支持，只需要认真仔细结合MySQL协议实现即可。</p>
-<h2 id="KtSQL的MySQL协议实现"><a href="#KtSQL的MySQL协议实现" class="headerlink" title="KtSQL的MySQL协议实现"></a>KtSQL的MySQL协议实现</h2><p>KtSQL Tcp服务底层使用Vertx框架，这是出于Vertx的高性能和Kotlin支持而选择的。协议解包则采用手写的方式实现，适当参考了第三方实现的代码。MySQL协议的命令并没有考虑全部支持，这不仅仅因为工作量的原因，还因为底层引擎实现差异，导致某些MySQL命令支持是缺乏基础的。MySQL协议支持的目标是对常用的语句进行支持，让基于MySQL标准协议开发的应用“无缝”切换过来，如JDBC应用。</p>
+<h2 id="KtSQL的MySQL协议实现"><a href="#KtSQL的MySQL协议实现" class="headerlink" title="KtSQL的MySQL协议实现"></a>KtSQL的MySQL协议实现</h2><p>KtSQL Tcp服务底层使用Vertx框架，这是出于Vertx的高性能和Kotlin支持而选择的。协议解包则采用手写的方式实现，适当参考了第三方实现的代码。MySQL协议的命令并没有考虑全部支持，这不仅仅因为工作量的原因，还因为底层引擎实现差异，导致某些MySQL命令支持缺乏基础。MySQL协议支持的目标是实现常用的语句，让基于MySQL标准协议开发的应用“无缝”切换过来，如JDBC应用。</p>
 <p>虽然底层的SQL解析用Calcite实现，但是部分MySQL语句，Calcite并不支持，需要对SQL协议解析进行增强。对此需求，引入了协议解析库。在协议解析上尝试了jparsec和parboiled两个库，最终选择了jparsec，原因是jparsec的解析器构建速度比parboiled快。用小规模样例测试的方法，得知jparsec和parboiled两者解析速度基本持平，在解析器构建环节，jparsec则因为其实现简单所以速度比parboiled要快不少。考虑到OLTP高并发的需求，速度的提升还是很重要的一个因素。</p>
 <p>MySQL命令实现的测试方法是采用MySQL JDBC Driver和服务端交互，测试是否能够支持所需命令。主要的交互流程为：</p>
 <ul>
@@ -502,7 +502,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -341,7 +341,28 @@
       
         
           
-            
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Spark Thrift Server是相当值得参考的技术。核心的内容包括有：</p>
+<ul>
+<li>catalyst 高性能的优化器</li>
+<li>sql core 分布式查询实现</li>
+<li>hive 实现元数据管理，兼容hive</li>
+<li>thrift server 对hive jdbc的支持</li>
+</ul>
+<p>这一套组合下来，就是一个完整的分布式OLAP查询实现。结合之前介绍的Hadoop存储体系，即可搭建完整的OLAP系统。</p>
+<p>OLAP系统的研究，有几个值得挖掘的问题：</p>
+<ul>
+<li>能否进一步提高计算的效率，对更大规模的数据集进行实时查询</li>
+<li>能否对某些特定的查询进行优化，满足特定场景应用的需求</li>
+<li>能否从简单的数据信息获取，到更进一步的数据特征处理</li>
+<li>能否融合智能算法，实现数据更强大的处理能力</li>
+</ul>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>catalyst</li>
+<li>sql-core</li>
+<li>hive</li>
+<li>thrift server</li>
+</ul>
+
           
         
       
@@ -462,10 +483,11 @@
           
             <p>新的一年又即将来到，盘点今年的开源进度，感触良多。</p>
 <p>KtSQL最早开始于2016年，当时还记得只有一点MySQL分库分表中间件的开发基础，对分布式事务数据库领域只能算是懵懵懂懂。萌生开发一个分布式事务数据库的原因，是因为在大数据系统应用开发过程中，反复感觉到所谓大数据，无非是把数据库从单机或小规模集群往分布式系统发展的过程。既然如此，为什么不直接做一个分布式数据库呢？</p>
-<p>一晃眼两年过去，大数据领域果然出现了NewSQL的潮流，也开始出现了数据中台的概念。引发这个趋势的，不光是自然而然的信息化复杂度增加，还在于除了结果数据外，过程数据也开始被重视起来，而且出现了过程数据与结果数据的融合协同趋势。</p>
+<p>说来容易做来难，项目启动的时候，其实有诸多波折。开源项目和商业项目是不同的，商业项目会围绕战略展开，而开源项目则需要自己去思考项目的意义，这其实会导致想法的纷乱。KtSQL开始后，有相当长的一段时间，阅读了许多分布式数据库方向资料，回头想想，真是一段充实的时光。但这时虽然增长了知识，却陷入了各种想法的引诱，导致很长一段时间项目的立意都不清晰；到了真正开始动手的时候，一开始的想法是底层存储基于MySQL实现，充分利用MySQL生态。但是，在分布式事务时，思路卡住了，Google Percolator要在MySQL上实现，诸多限制，这也算是走了弯路，后来才换成HBase。经历过这些挫折磨难，才真正进入到正轨。</p>
+<p>一晃眼两年多过去，大数据领域果然出现了NewSQL的潮流，也开始出现了数据中台的概念。引发这个趋势的，不光是自然而然的信息化复杂度增加，还在于除了结果数据外，过程数据也开始被重视起来，而且出现了过程数据与结果数据的融合协同趋势。</p>
 <p>从商业领域角度观察，信息化水平的提升，对于克服规模效应带来的效率不足问题，有着颠覆性的价值。中国的经济规模，互联网技术带来跨地域经济协作，都是这一方向的良好温床，而一带一路带来的全球化效应，更是为进一步发展打下良好基础。大势如此，必然会导致一个个的独立个体加入到各种的经济联系体中，而经济联系体天生有需求往规模化发展。</p>
 <p>既然规模化是大趋势，那么信息化的复杂度必然不断提升，必然带来更多的信息化系统。这些信息化系统都需要数据库，而且通过数据库来完成信息化系统之间的协同工作，成本远低于现在所谓的微服务系统。</p>
-<p>而且，随着机器学习、深度学习、人工智能领域的科研持续发展，数据的应用已经不仅仅局限于结果的保存，过程数据的监控、分析、处理，把数据应用带到了一个新的高度。能不能通过读取计算用户在多个系统之间的操作行为，判断出用户的当前意图，为下一步的用户响应做出恰如其分的应对？这就是下一步分布式事务数据库的发展方向。</p>
+<p>而且，随着机器学习、深度学习、人工智能领域的科研持续发展，数据的应用已经不仅仅局限于结果的保存，过程数据的监控、分析、处理，把数据应用带到了一个新的高度。能不能通过读取计算用户在多个系统之间的操作行为，判断出用户的当前意图，为下一步的用户响应做出恰如其分的应对？这就是下一步KtSQL的发展方向。</p>
 <p>KtSQL将迎着未来的方向持续进步，坚持不懈。也必然会在开源的路上奏出强音！</p>
 
           
@@ -588,9 +610,37 @@
           
             <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
 <li>OLTP和OLAP的核心区别</li>
+<li>问题的解决思路</li>
 <li>Hadoop体系下的各种存储格式的简介</li>
 <li>KtSQL如何做出自己的选择</li>
 <li>附录</li>
+</ul>
+<h2 id="OLTP和OLAP的核心区别"><a href="#OLTP和OLAP的核心区别" class="headerlink" title="OLTP和OLAP的核心区别"></a>OLTP和OLAP的核心区别</h2><p>OLTP面向小量数据的操作，包含保存、读取、更新等操作。高并发的小量数据是OLTP的场景。OLAP则面向数据信息的获取，需要大批量读取所需的数据。这两者的区别，以及现有的硬件架构，决定了OLTP使用行存格式，OLAP采用列存格式。</p>
+<p>如果是对数据建立索引，在面向OLTP场景时，从大量数据中检索出所需的数据，索引可以起到很大的加速效果。但如果是面向OLAP，大批量数据获取则对索引的依赖性大幅度降低，IO的速度变成了瓶颈，预计算、压缩存储、并行读取、并行计算等技术才是关键。这些区别，导致一种可以<br>同时满足OLTP和OLAP需求的存储架构难以出现。</p>
+<h2 id="问题的解决思路"><a href="#问题的解决思路" class="headerlink" title="问题的解决思路"></a>问题的解决思路</h2><p>正是因为鱼与熊掌难以兼得，所以市面上出现了不少妥协方案。如Apache Kudu、PingCap TiKV、Peloton Pax。尝试通过一个折衷方法来满足所有场景。简单点说，既然没有一种架构能够同时满足OLTP和OLAP，那么通过寻找一种两者架构的最优交集，也算是解决方法。</p>
+<p>PingCap TiKV和Peloton Pax的解决方案可以理解，毕竟这两者是立足于OLTP的。但是Apache Kudu，一个舍弃了应用场景，尝试去取得两者折衷效果的中立方案，这种解决思路是很怪的。既然没法解决，就要改变解决的思路。</p>
+<p>两份拷贝甚至多份拷贝并不是问题，存储的成本一直在下降，适当付出一定的存储成本，满足性能的需求，显然是另外一种思路。Apache Druid和SnappyData就是采用这样思路的解决方案。通过把热点数据放在内存中（可使用行式格式进行保存），把历史数据通过列式格式保存起来，通过查询要求的判断，找到满足查询需求的相应存储。</p>
+<p>简单说，通过数据拷贝，形成不同的存储格式，满足不同场景的使用需求，就是解决思路的方向。</p>
+<h2 id="Hadoop体系下的各种存储格式的简介"><a href="#Hadoop体系下的各种存储格式的简介" class="headerlink" title="Hadoop体系下的各种存储格式的简介"></a>Hadoop体系下的各种存储格式的简介</h2><p>业界中，Hadoop一直被当作可靠存储、数据仓库、商业智能的解决方案来使用，在OLTP场合下的场景看起来只有HBase一支独秀，且远未能成为主流。</p>
+<h3 id="hfile"><a href="#hfile" class="headerlink" title="hfile"></a>hfile</h3><h3 id="parquet"><a href="#parquet" class="headerlink" title="parquet"></a>parquet</h3><h3 id="orcfile"><a href="#orcfile" class="headerlink" title="orcfile"></a>orcfile</h3><p>orcfile出彩的功能点：</p>
+<ul>
+<li>acid支持</li>
+</ul>
+<h3 id="carbondata"><a href="#carbondata" class="headerlink" title="carbondata"></a>carbondata</h3><p>carbondata出彩的功能点：</p>
+<ul>
+<li>支持update &amp; delete</li>
+</ul>
+<h3 id="indexr"><a href="#indexr" class="headerlink" title="indexr"></a>indexr</h3><p>indexr出彩的功能点：</p>
+<ul>
+<li>高性能的实时入库</li>
+</ul>
+<h3 id="个人判断"><a href="#个人判断" class="headerlink" title="个人判断"></a>个人判断</h3><p>通过上述存储格式的介绍，可以看到，一些关键的功能点：</p>
+<h2 id="KtSQL如何做出自己的选择"><a href="#KtSQL如何做出自己的选择" class="headerlink" title="KtSQL如何做出自己的选择"></a>KtSQL如何做出自己的选择</h2><p>KtSQL主要面向的场景还是OLTP，所以优先满足的还是OLTP的需求。采用HBase作为底层的存储，是与这一点不违背的。KtSQL提供了二次索引的能力，对于从大范围数据中获取小量数据的场景，也是满足需求的。对于不可避免需要满足的统计式查询，HBase并不擅长。这可以通过mini cube（参考carbondata）的方式来处理，即通过二次索引机制实现自定义cube，对KtSQL进行扩展。</p>
+<h3 id="采用apache-kudu作为底层存储"><a href="#采用apache-kudu作为底层存储" class="headerlink" title="采用apache kudu作为底层存储"></a>采用apache kudu作为底层存储</h3><h3 id="与Apache-Doris的对比"><a href="#与Apache-Doris的对比" class="headerlink" title="与Apache Doris的对比"></a>与Apache Doris的对比</h3><h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="https://kudu.apache.org/kudu.pdf" target="_blank" rel="noopener">apache kudu paper</a></li>
+<li><a href="https://github.com/tikv/tikv" target="_blank" rel="noopener">pingcap tikv</a></li>
+<li><a href="https://db.cs.cmu.edu/papers/2016/arulraj-sigmod2016.pdf" target="_blank" rel="noopener">cmu sigmod 2016 paper</a></li>
+<li><a href="https://pelotondb.io/publications/" target="_blank" rel="noopener">cmu peloton</a></li>
 </ul>
 
           
@@ -720,14 +770,14 @@
 <h2 id="MySQL协议支持的思考"><a href="#MySQL协议支持的思考" class="headerlink" title="MySQL协议支持的思考"></a>MySQL协议支持的思考</h2><p>随着互联网的发展，MySQL毫无疑问已经成为OLTP的标准，这个从DB Engine Rank的排名就可以轻易看出来。这是一个很有意思的现象，开源技术如果可以伴随新行业的发展而成长，则可以长大到一个无可估量的高度。闲话扯一下，做开源的各位，是不是应该考虑一下和新趋势结合一下，成为新趋势的推动力呢？</p>
 <p>数据库的迁移成本是昂贵的，这也是为什么去IOE这么困难的原因。虽然节约成本是每个客户都希望得到的，但是应用对数据库的深度依赖让迁移成本远高于节约的成本，导致数据库无法迁移。如果无法迁移意味着技术落后，这将是难以忍受的结果。</p>
 <p>支持MySQL协议正是基于这样的想法而坚定下来的。降低迁移成本，让原有的数据库使用者可以低成本迁移到KtSQL，是兼容MySQL协议的意义。</p>
-<h2 id="MySQL协议相关技术介绍"><a href="#MySQL协议相关技术介绍" class="headerlink" title="MySQL协议相关技术介绍"></a>MySQL协议相关技术介绍</h2><p>分布式数据库一直依赖都存在两个实现方向。一个是在原有的数据库系统基础上，通过替换底层的存储引擎，通过存储引擎的分布式实现完成原有单机系统升级为分布式系统的改造，Amazon的Aurora就是典型例子；另一个是在SQL引擎层，实现对MySQL协议的支持，过往许多的MySQL分布式中间件都是采用这种方式。</p>
+<h2 id="MySQL协议相关技术介绍"><a href="#MySQL协议相关技术介绍" class="headerlink" title="MySQL协议相关技术介绍"></a>MySQL协议相关技术介绍</h2><p>分布式数据库一直以来都存在两个实现方向。一个是在原有的数据库系统基础上，通过替换底层的存储引擎，通过存储引擎的分布式实现完成原有单机系统升级为分布式系统的改造，Amazon的Aurora就是典型例子；另一个是在SQL引擎层，实现对SQL协议的支持，过往许多的MySQL分布式中间件都是采用这种方式。</p>
 <p>KtSQL选择的是后一种方式，出于以下几点考虑：</p>
 <ul>
 <li>为将来可能支持其他的协议做准备，Oracle、Postgres、SQL Server等</li>
 <li>突破数据库引擎的局限，为SQL引擎的创新做准备，如引入UDF</li>
 </ul>
 <p>从技术上来说，MySQL协议是一个TCP协议解包分发处理的逻辑，核心的两块是TCP服务和协议解包，这些都有成熟的类库支持，只需要认真仔细结合MySQL协议实现即可。</p>
-<h2 id="KtSQL的MySQL协议实现"><a href="#KtSQL的MySQL协议实现" class="headerlink" title="KtSQL的MySQL协议实现"></a>KtSQL的MySQL协议实现</h2><p>KtSQL Tcp服务底层使用Vertx框架，这是出于Vertx的高性能和Kotlin支持而选择的。协议解包则采用手写的方式实现，适当参考了第三方实现的代码。MySQL协议的命令并没有考虑全部支持，这不仅仅因为工作量的原因，还因为底层引擎实现差异，导致某些MySQL命令支持是缺乏基础的。MySQL协议支持的目标是对常用的语句进行支持，让基于MySQL标准协议开发的应用“无缝”切换过来，如JDBC应用。</p>
+<h2 id="KtSQL的MySQL协议实现"><a href="#KtSQL的MySQL协议实现" class="headerlink" title="KtSQL的MySQL协议实现"></a>KtSQL的MySQL协议实现</h2><p>KtSQL Tcp服务底层使用Vertx框架，这是出于Vertx的高性能和Kotlin支持而选择的。协议解包则采用手写的方式实现，适当参考了第三方实现的代码。MySQL协议的命令并没有考虑全部支持，这不仅仅因为工作量的原因，还因为底层引擎实现差异，导致某些MySQL命令支持缺乏基础。MySQL协议支持的目标是实现常用的语句，让基于MySQL标准协议开发的应用“无缝”切换过来，如JDBC应用。</p>
 <p>虽然底层的SQL解析用Calcite实现，但是部分MySQL语句，Calcite并不支持，需要对SQL协议解析进行增强。对此需求，引入了协议解析库。在协议解析上尝试了jparsec和parboiled两个库，最终选择了jparsec，原因是jparsec的解析器构建速度比parboiled快。用小规模样例测试的方法，得知jparsec和parboiled两者解析速度基本持平，在解析器构建环节，jparsec则因为其实现简单所以速度比parboiled要快不少。考虑到OLTP高并发的需求，速度的提升还是很重要的一个因素。</p>
 <p>MySQL命令实现的测试方法是采用MySQL JDBC Driver和服务端交互，测试是否能够支持所需命令。主要的交互流程为：</p>
 <ul>
@@ -860,7 +910,39 @@
       
         
           
-            
+            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>分布式事务的需求与挑战</li>
+<li>Google Percolator简介</li>
+<li>Apache Tephra简介</li>
+<li>附录</li>
+</ul>
+<h2 id="分布式事务的需求与挑战"><a href="#分布式事务的需求与挑战" class="headerlink" title="分布式事务的需求与挑战"></a>分布式事务的需求与挑战</h2><p>分布式事务的需求在于同时更新两个或两个以上的数据记录时，需要保持其原子性。往大一点说，就是对两个账户之间进行转账操作，不能一个账户成功，另外一个账户失败。往小一点说，对数据建立索引，不能数据更新了，索引更新失败。</p>
+<p>业务里面有许多情况都需要实现事务，其实事务完全可以在应用层面来完成。举个简单例子，支付网关的实现：两套系统之间通过约定的协议进行交互，双方响应确认后，事务成功，否则失败。不过这种事务衡量的标准是BASE，并不是强一致性。</p>
+<p>强一致性分布式事务传统的实现方法是2PC。2PC因为其可用性及锁粒度，一直被诟病，无法应用于大规模高并发的场景，而恰恰随着业务的发展，大规模高并发会是分布式事务遇到的第一个门槛。</p>
+<h2 id="Google-Percolator简介"><a href="#Google-Percolator简介" class="headerlink" title="Google Percolator简介"></a>Google Percolator简介</h2><p>Google Percolator（简称Percolator）提出了强一致性分布式事务的解决方案，解决了传统2PC的缺陷。首先，通过MVCC机制，消除了锁机制带来的并发性问题；其次，通过依赖底层存储的高可用性和细粒度锁，将分布式事务失败带来的影响降低到很低的程度。</p>
+<p>Percolator的构思很巧妙，既然底层的存储可以支持单操作ACID，那么就可以在单操作ACID的基础上，构建出多操作的ACID，这其实和数据库实现ACID的思路是一样的。通过类似WAL的操作，记录操作的状态，如果完成则设置为成功，否则就是一段废弃的操作记录。</p>
+<p>在分布式环境下，MVCC并发提交的时候，会面临如何确保来自不同的客户端的请求，可以按先后次序进行排队操作的问题。Percolator是通过原子钟实现全局时钟的方式对操作进行排序。在实际实现中，通过全局授时也是可以的。</p>
+<p>附录中有Percolator的介绍，含paper地址和中文简介。不过中文简介中步骤的描述有一些瑕疵，对时序6中，写上data@5并没有阐述，在下面的整体流程中，会补充说明一下。</p>
+<p>整体流程大致如下：</p>
+<ul>
+<li>参与操作的所有记录都打上写时序标记，进入写锁状态</li>
+<li>对所有的操作记录进行操作，操作时，会记录当前记录操作关联的记录，这样当自己操作失败时，可以追溯到上一条记录进行回滚</li>
+<li>当所有的操作都成功时，开始改变自身的锁状态，完成数据的提交</li>
+</ul>
+<p>MVCC机制在Percolator的实现中，是关键基石。有了MVCC，才能保证数据在事务没有结束前，也可以被访问。</p>
+<h2 id="Apache-Tephra简介"><a href="#Apache-Tephra简介" class="headerlink" title="Apache Tephra简介"></a>Apache Tephra简介</h2><p>Apache Tephra（简称Tephra）是专用于HBase的分布式事务实现。包含以下模块：</p>
+<ul>
+<li>客户端模块，负责发起事务的操作</li>
+<li>HBase corprocessor模块，通过改变HBase的存储逻辑完成Percolator中记录状态的逻辑</li>
+<li>服务器模块，实现事务的控制，支持zookeeper管理下的单主多实例，通过zookeeper保证数据的一致性，以及管理多个服务器模块的选主</li>
+</ul>
+<p>从实现上来看，把事务控制放在服务器模块，必然会带来服务器模块的性能问题。如何实现多服务器的事务管理以及如何保证服务器模块的数据一致性问题，这是Tephra可以改进的地方。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="http://tephra.apache.org" target="_blank" rel="noopener">Apache Tephra</a></li>
+<li><a href="https://research.google.com/pubs/archive/36726.pdf" target="_blank" rel="noopener">Google Percolator Paper</a></li>
+<li><a href="https://github.com/ngaut/builddatabase/blob/master/percolator/README.md" target="_blank" rel="noopener">Percolator中文简介</a></li>
+</ul>
+
           
         
       
@@ -956,7 +1038,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

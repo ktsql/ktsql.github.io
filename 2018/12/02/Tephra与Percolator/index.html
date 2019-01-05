@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Tephra,Percolator,">
 
 
 
@@ -94,14 +94,18 @@
 
 
 
+<meta name="description" content="目录 分布式事务的需求与挑战 Google Percolator简介 Apache Tephra简介 附录  分布式事务的需求与挑战分布式事务的需求在于同时更新两个或两个以上的数据记录时，需要保持其原子性。往大一点说，就是对两个账户之间进行转账操作，不能一个账户成功，另外一个账户失败。往小一点说，对数据建立索引，不能数据更新了，索引更新失败。 业务里面有许多情况都需要实现事务，其实事务完全可以在应">
+<meta name="keywords" content="Tephra,Percolator">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tephra与Percolator">
 <meta property="og:url" content="https://ktsql.github.io/2018/12/02/Tephra与Percolator/index.html">
 <meta property="og:site_name" content="KtSQL的呢喃">
+<meta property="og:description" content="目录 分布式事务的需求与挑战 Google Percolator简介 Apache Tephra简介 附录  分布式事务的需求与挑战分布式事务的需求在于同时更新两个或两个以上的数据记录时，需要保持其原子性。往大一点说，就是对两个账户之间进行转账操作，不能一个账户成功，另外一个账户失败。往小一点说，对数据建立索引，不能数据更新了，索引更新失败。 业务里面有许多情况都需要实现事务，其实事务完全可以在应">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-15T03:34:50.907Z">
+<meta property="og:updated_time" content="2019-01-05T18:20:02.923Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tephra与Percolator">
+<meta name="twitter:description" content="目录 分布式事务的需求与挑战 Google Percolator简介 Apache Tephra简介 附录  分布式事务的需求与挑战分布式事务的需求在于同时更新两个或两个以上的数据记录时，需要保持其原子性。往大一点说，就是对两个账户之间进行转账操作，不能一个账户成功，另外一个账户失败。往小一点说，对数据建立索引，不能数据更新了，索引更新失败。 业务里面有许多情况都需要实现事务，其实事务完全可以在应">
 
 
 
@@ -336,7 +340,39 @@
       
 
       
-        
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>分布式事务的需求与挑战</li>
+<li>Google Percolator简介</li>
+<li>Apache Tephra简介</li>
+<li>附录</li>
+</ul>
+<h2 id="分布式事务的需求与挑战"><a href="#分布式事务的需求与挑战" class="headerlink" title="分布式事务的需求与挑战"></a>分布式事务的需求与挑战</h2><p>分布式事务的需求在于同时更新两个或两个以上的数据记录时，需要保持其原子性。往大一点说，就是对两个账户之间进行转账操作，不能一个账户成功，另外一个账户失败。往小一点说，对数据建立索引，不能数据更新了，索引更新失败。</p>
+<p>业务里面有许多情况都需要实现事务，其实事务完全可以在应用层面来完成。举个简单例子，支付网关的实现：两套系统之间通过约定的协议进行交互，双方响应确认后，事务成功，否则失败。不过这种事务衡量的标准是BASE，并不是强一致性。</p>
+<p>强一致性分布式事务传统的实现方法是2PC。2PC因为其可用性及锁粒度，一直被诟病，无法应用于大规模高并发的场景，而恰恰随着业务的发展，大规模高并发会是分布式事务遇到的第一个门槛。</p>
+<h2 id="Google-Percolator简介"><a href="#Google-Percolator简介" class="headerlink" title="Google Percolator简介"></a>Google Percolator简介</h2><p>Google Percolator（简称Percolator）提出了强一致性分布式事务的解决方案，解决了传统2PC的缺陷。首先，通过MVCC机制，消除了锁机制带来的并发性问题；其次，通过依赖底层存储的高可用性和细粒度锁，将分布式事务失败带来的影响降低到很低的程度。</p>
+<p>Percolator的构思很巧妙，既然底层的存储可以支持单操作ACID，那么就可以在单操作ACID的基础上，构建出多操作的ACID，这其实和数据库实现ACID的思路是一样的。通过类似WAL的操作，记录操作的状态，如果完成则设置为成功，否则就是一段废弃的操作记录。</p>
+<p>在分布式环境下，MVCC并发提交的时候，会面临如何确保来自不同的客户端的请求，可以按先后次序进行排队操作的问题。Percolator是通过原子钟实现全局时钟的方式对操作进行排序。在实际实现中，通过全局授时也是可以的。</p>
+<p>附录中有Percolator的介绍，含paper地址和中文简介。不过中文简介中步骤的描述有一些瑕疵，对时序6中，写上data@5并没有阐述，在下面的整体流程中，会补充说明一下。</p>
+<p>整体流程大致如下：</p>
+<ul>
+<li>参与操作的所有记录都打上写时序标记，进入写锁状态</li>
+<li>对所有的操作记录进行操作，操作时，会记录当前记录操作关联的记录，这样当自己操作失败时，可以追溯到上一条记录进行回滚</li>
+<li>当所有的操作都成功时，开始改变自身的锁状态，完成数据的提交</li>
+</ul>
+<p>MVCC机制在Percolator的实现中，是关键基石。有了MVCC，才能保证数据在事务没有结束前，也可以被访问。</p>
+<h2 id="Apache-Tephra简介"><a href="#Apache-Tephra简介" class="headerlink" title="Apache Tephra简介"></a>Apache Tephra简介</h2><p>Apache Tephra（简称Tephra）是专用于HBase的分布式事务实现。包含以下模块：</p>
+<ul>
+<li>客户端模块，负责发起事务的操作</li>
+<li>HBase corprocessor模块，通过改变HBase的存储逻辑完成Percolator中记录状态的逻辑</li>
+<li>服务器模块，实现事务的控制，支持zookeeper管理下的单主多实例，通过zookeeper保证数据的一致性，以及管理多个服务器模块的选主</li>
+</ul>
+<p>从实现上来看，把事务控制放在服务器模块，必然会带来服务器模块的性能问题。如何实现多服务器的事务管理以及如何保证服务器模块的数据一致性问题，这是Tephra可以改进的地方。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="http://tephra.apache.org" target="_blank" rel="noopener">Apache Tephra</a></li>
+<li><a href="https://research.google.com/pubs/archive/36726.pdf" target="_blank" rel="noopener">Google Percolator Paper</a></li>
+<li><a href="https://github.com/ngaut/builddatabase/blob/master/percolator/README.md" target="_blank" rel="noopener">Percolator中文简介</a></li>
+</ul>
+
       
     </div>
     
@@ -350,6 +386,14 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tephra/" rel="tag"># Tephra</a>
+          
+            <a href="/tags/Percolator/" rel="tag"># Percolator</a>
+          
+        </div>
       
 
       
@@ -424,8 +468,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/img/favicon.ico" alt="principality">
           <p class="site-author-name" itemprop="name">principality</p>
@@ -451,7 +504,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -476,6 +529,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务的需求与挑战"><span class="nav-number">2.</span> <span class="nav-text">分布式事务的需求与挑战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Percolator简介"><span class="nav-number">3.</span> <span class="nav-text">Google Percolator简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apache-Tephra简介"><span class="nav-number">4.</span> <span class="nav-text">Apache Tephra简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">5.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

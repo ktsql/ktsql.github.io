@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="目录 OLTP和OLAP的核心区别 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录">
+<meta name="description" content="目录 OLTP和OLAP的核心区别 问题的解决思路 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录  OLTP和OLAP的核心区别OLTP面向小量数据的操作，包含保存、读取、更新等操作。高并发的小量数据是OLTP的场景。OLAP则面向数据信息的获取，需要大批量读取所需的数据。这两者的区别，以及现有的硬件架构，决定了OLTP使用行存格式，OLAP采用列存格式。 如果是对数">
 <meta name="keywords" content="OLTP,OLAP,Hadoop,hfile,parquet,orcfile,carbondata,indexr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hfile, parquet, orcfile, carbondata and indexr">
 <meta property="og:url" content="https://ktsql.github.io/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/index.html">
 <meta property="og:site_name" content="KtSQL的呢喃">
-<meta property="og:description" content="目录 OLTP和OLAP的核心区别 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录">
+<meta property="og:description" content="目录 OLTP和OLAP的核心区别 问题的解决思路 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录  OLTP和OLAP的核心区别OLTP面向小量数据的操作，包含保存、读取、更新等操作。高并发的小量数据是OLTP的场景。OLAP则面向数据信息的获取，需要大批量读取所需的数据。这两者的区别，以及现有的硬件架构，决定了OLTP使用行存格式，OLAP采用列存格式。 如果是对数">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-05T03:40:51.586Z">
+<meta property="og:updated_time" content="2019-01-05T16:45:01.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hfile, parquet, orcfile, carbondata and indexr">
-<meta name="twitter:description" content="目录 OLTP和OLAP的核心区别 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录">
+<meta name="twitter:description" content="目录 OLTP和OLAP的核心区别 问题的解决思路 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录  OLTP和OLAP的核心区别OLTP面向小量数据的操作，包含保存、读取、更新等操作。高并发的小量数据是OLTP的场景。OLAP则面向数据信息的获取，需要大批量读取所需的数据。这两者的区别，以及现有的硬件架构，决定了OLTP使用行存格式，OLAP采用列存格式。 如果是对数">
 
 
 
@@ -342,9 +342,37 @@
       
         <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
 <li>OLTP和OLAP的核心区别</li>
+<li>问题的解决思路</li>
 <li>Hadoop体系下的各种存储格式的简介</li>
 <li>KtSQL如何做出自己的选择</li>
 <li>附录</li>
+</ul>
+<h2 id="OLTP和OLAP的核心区别"><a href="#OLTP和OLAP的核心区别" class="headerlink" title="OLTP和OLAP的核心区别"></a>OLTP和OLAP的核心区别</h2><p>OLTP面向小量数据的操作，包含保存、读取、更新等操作。高并发的小量数据是OLTP的场景。OLAP则面向数据信息的获取，需要大批量读取所需的数据。这两者的区别，以及现有的硬件架构，决定了OLTP使用行存格式，OLAP采用列存格式。</p>
+<p>如果是对数据建立索引，在面向OLTP场景时，从大量数据中检索出所需的数据，索引可以起到很大的加速效果。但如果是面向OLAP，大批量数据获取则对索引的依赖性大幅度降低，IO的速度变成了瓶颈，预计算、压缩存储、并行读取、并行计算等技术才是关键。这些区别，导致一种可以<br>同时满足OLTP和OLAP需求的存储架构难以出现。</p>
+<h2 id="问题的解决思路"><a href="#问题的解决思路" class="headerlink" title="问题的解决思路"></a>问题的解决思路</h2><p>正是因为鱼与熊掌难以兼得，所以市面上出现了不少妥协方案。如Apache Kudu、PingCap TiKV、Peloton Pax。尝试通过一个折衷方法来满足所有场景。简单点说，既然没有一种架构能够同时满足OLTP和OLAP，那么通过寻找一种两者架构的最优交集，也算是解决方法。</p>
+<p>PingCap TiKV和Peloton Pax的解决方案可以理解，毕竟这两者是立足于OLTP的。但是Apache Kudu，一个舍弃了应用场景，尝试去取得两者折衷效果的中立方案，这种解决思路是很怪的。既然没法解决，就要改变解决的思路。</p>
+<p>两份拷贝甚至多份拷贝并不是问题，存储的成本一直在下降，适当付出一定的存储成本，满足性能的需求，显然是另外一种思路。Apache Druid和SnappyData就是采用这样思路的解决方案。通过把热点数据放在内存中（可使用行式格式进行保存），把历史数据通过列式格式保存起来，通过查询要求的判断，找到满足查询需求的相应存储。</p>
+<p>简单说，通过数据拷贝，形成不同的存储格式，满足不同场景的使用需求，就是解决思路的方向。</p>
+<h2 id="Hadoop体系下的各种存储格式的简介"><a href="#Hadoop体系下的各种存储格式的简介" class="headerlink" title="Hadoop体系下的各种存储格式的简介"></a>Hadoop体系下的各种存储格式的简介</h2><p>业界中，Hadoop一直被当作可靠存储、数据仓库、商业智能的解决方案来使用，在OLTP场合下的场景看起来只有HBase一支独秀，且远未能成为主流。</p>
+<h3 id="hfile"><a href="#hfile" class="headerlink" title="hfile"></a>hfile</h3><h3 id="parquet"><a href="#parquet" class="headerlink" title="parquet"></a>parquet</h3><h3 id="orcfile"><a href="#orcfile" class="headerlink" title="orcfile"></a>orcfile</h3><p>orcfile出彩的功能点：</p>
+<ul>
+<li>acid支持</li>
+</ul>
+<h3 id="carbondata"><a href="#carbondata" class="headerlink" title="carbondata"></a>carbondata</h3><p>carbondata出彩的功能点：</p>
+<ul>
+<li>支持update &amp; delete</li>
+</ul>
+<h3 id="indexr"><a href="#indexr" class="headerlink" title="indexr"></a>indexr</h3><p>indexr出彩的功能点：</p>
+<ul>
+<li>高性能的实时入库</li>
+</ul>
+<h3 id="个人判断"><a href="#个人判断" class="headerlink" title="个人判断"></a>个人判断</h3><p>通过上述存储格式的介绍，可以看到，一些关键的功能点：</p>
+<h2 id="KtSQL如何做出自己的选择"><a href="#KtSQL如何做出自己的选择" class="headerlink" title="KtSQL如何做出自己的选择"></a>KtSQL如何做出自己的选择</h2><p>KtSQL主要面向的场景还是OLTP，所以优先满足的还是OLTP的需求。采用HBase作为底层的存储，是与这一点不违背的。KtSQL提供了二次索引的能力，对于从大范围数据中获取小量数据的场景，也是满足需求的。对于不可避免需要满足的统计式查询，HBase并不擅长。这可以通过mini cube（参考carbondata）的方式来处理，即通过二次索引机制实现自定义cube，对KtSQL进行扩展。</p>
+<h3 id="采用apache-kudu作为底层存储"><a href="#采用apache-kudu作为底层存储" class="headerlink" title="采用apache kudu作为底层存储"></a>采用apache kudu作为底层存储</h3><h3 id="与Apache-Doris的对比"><a href="#与Apache-Doris的对比" class="headerlink" title="与Apache Doris的对比"></a>与Apache Doris的对比</h3><h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="https://kudu.apache.org/kudu.pdf" target="_blank" rel="noopener">apache kudu paper</a></li>
+<li><a href="https://github.com/tikv/tikv" target="_blank" rel="noopener">pingcap tikv</a></li>
+<li><a href="https://db.cs.cmu.edu/papers/2016/arulraj-sigmod2016.pdf" target="_blank" rel="noopener">cmu sigmod 2016 paper</a></li>
+<li><a href="https://pelotondb.io/publications/" target="_blank" rel="noopener">cmu peloton</a></li>
 </ul>
 
       
@@ -490,7 +518,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -525,7 +553,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OLTP和OLAP的核心区别"><span class="nav-number">2.</span> <span class="nav-text">OLTP和OLAP的核心区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题的解决思路"><span class="nav-number">3.</span> <span class="nav-text">问题的解决思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop体系下的各种存储格式的简介"><span class="nav-number">4.</span> <span class="nav-text">Hadoop体系下的各种存储格式的简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hfile"><span class="nav-number">4.1.</span> <span class="nav-text">hfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parquet"><span class="nav-number">4.2.</span> <span class="nav-text">parquet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orcfile"><span class="nav-number">4.3.</span> <span class="nav-text">orcfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#carbondata"><span class="nav-number">4.4.</span> <span class="nav-text">carbondata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#indexr"><span class="nav-number">4.5.</span> <span class="nav-text">indexr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人判断"><span class="nav-number">4.6.</span> <span class="nav-text">个人判断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KtSQL如何做出自己的选择"><span class="nav-number">5.</span> <span class="nav-text">KtSQL如何做出自己的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#采用apache-kudu作为底层存储"><span class="nav-number">5.1.</span> <span class="nav-text">采用apache kudu作为底层存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与Apache-Doris的对比"><span class="nav-number">5.2.</span> <span class="nav-text">与Apache Doris的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">6.</span> <span class="nav-text">附录</span></a></li></ol></div>
             
 
           </div>

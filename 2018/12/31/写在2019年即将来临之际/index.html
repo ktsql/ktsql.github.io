@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="KtSQL,2019,">
 
 
 
@@ -94,14 +94,18 @@
 
 
 
+<meta name="description" content="新的一年又即将来到，盘点今年的开源进度，感触良多。 KtSQL最早开始于2016年，当时还记得只有一点MySQL分库分表中间件的开发基础，对分布式事务数据库领域只能算是懵懵懂懂。萌生开发一个分布式事务数据库的原因，是因为在大数据系统应用开发过程中，反复感觉到所谓大数据，无非是把数据库从单机或小规模集群往分布式系统发展的过程。既然如此，为什么不直接做一个分布式数据库呢？ 一晃眼两年过去，大数据领域果">
+<meta name="keywords" content="KtSQL,2019">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tephra与Percolator">
-<meta property="og:url" content="https://ktsql.github.io/2018/12/02/Tephra与Percolator/index.html">
+<meta property="og:title" content="写在2019年即将来临之际">
+<meta property="og:url" content="https://ktsql.github.io/2018/12/31/写在2019年即将来临之际/index.html">
 <meta property="og:site_name" content="KtSQL的呢喃">
+<meta property="og:description" content="新的一年又即将来到，盘点今年的开源进度，感触良多。 KtSQL最早开始于2016年，当时还记得只有一点MySQL分库分表中间件的开发基础，对分布式事务数据库领域只能算是懵懵懂懂。萌生开发一个分布式事务数据库的原因，是因为在大数据系统应用开发过程中，反复感觉到所谓大数据，无非是把数据库从单机或小规模集群往分布式系统发展的过程。既然如此，为什么不直接做一个分布式数据库呢？ 一晃眼两年过去，大数据领域果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-15T03:34:50.907Z">
+<meta property="og:updated_time" content="2019-01-05T04:20:35.744Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tephra与Percolator">
+<meta name="twitter:title" content="写在2019年即将来临之际">
+<meta name="twitter:description" content="新的一年又即将来到，盘点今年的开源进度，感触良多。 KtSQL最早开始于2016年，当时还记得只有一点MySQL分库分表中间件的开发基础，对分布式事务数据库领域只能算是懵懵懂懂。萌生开发一个分布式事务数据库的原因，是因为在大数据系统应用开发过程中，反复感觉到所谓大数据，无非是把数据库从单机或小规模集群往分布式系统发展的过程。既然如此，为什么不直接做一个分布式数据库呢？ 一晃眼两年过去，大数据领域果">
 
 
 
@@ -130,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://ktsql.github.io/2018/12/02/Tephra与Percolator/">
+  <link rel="canonical" href="https://ktsql.github.io/2018/12/31/写在2019年即将来临之际/">
 
 
 
 
 
-  <title>Tephra与Percolator | KtSQL的呢喃</title>
+  <title>写在2019年即将来临之际 | KtSQL的呢喃</title>
   
 
 
@@ -269,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/02/Tephra与Percolator/">
+    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/31/写在2019年即将来临之际/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="principality">
@@ -286,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Tephra与Percolator</h1>
+          <h1 class="post-title" itemprop="name headline">写在2019年即将来临之际</h1>
         
 
         <div class="post-meta">
@@ -298,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-02T15:04:01+08:00">
-                2018-12-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-31T22:53:09+08:00">
+                2018-12-31
               </time>
             
 
@@ -336,7 +340,14 @@
       
 
       
-        
+        <p>新的一年又即将来到，盘点今年的开源进度，感触良多。</p>
+<p>KtSQL最早开始于2016年，当时还记得只有一点MySQL分库分表中间件的开发基础，对分布式事务数据库领域只能算是懵懵懂懂。萌生开发一个分布式事务数据库的原因，是因为在大数据系统应用开发过程中，反复感觉到所谓大数据，无非是把数据库从单机或小规模集群往分布式系统发展的过程。既然如此，为什么不直接做一个分布式数据库呢？</p>
+<p>一晃眼两年过去，大数据领域果然出现了NewSQL的潮流，也开始出现了数据中台的概念。引发这个趋势的，不光是自然而然的信息化复杂度增加，还在于除了结果数据外，过程数据也开始被重视起来，而且出现了过程数据与结果数据的融合协同趋势。</p>
+<p>从商业领域角度观察，信息化水平的提升，对于克服规模效应带来的效率不足问题，有着颠覆性的价值。中国的经济规模，互联网技术带来跨地域经济协作，都是这一方向的良好温床，而一带一路带来的全球化效应，更是为进一步发展打下良好基础。大势如此，必然会导致一个个的独立个体加入到各种的经济联系体中，而经济联系体天生有需求往规模化发展。</p>
+<p>既然规模化是大趋势，那么信息化的复杂度必然不断提升，必然带来更多的信息化系统。这些信息化系统都需要数据库，而且通过数据库来完成信息化系统之间的协同工作，成本远低于现在所谓的微服务系统。</p>
+<p>而且，随着机器学习、深度学习、人工智能领域的科研持续发展，数据的应用已经不仅仅局限于结果的保存，过程数据的监控、分析、处理，把数据应用带到了一个新的高度。能不能通过读取计算用户在多个系统之间的操作行为，判断出用户的当前意图，为下一步的用户响应做出恰如其分的应对？这就是下一步分布式事务数据库的发展方向。</p>
+<p>KtSQL将迎着未来的方向持续进步，坚持不懈。也必然会在开源的路上奏出强音！</p>
+
       
     </div>
     
@@ -351,6 +362,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/KtSQL/" rel="tag"># KtSQL</a>
+          
+            <a href="/tags/2019/" rel="tag"># 2019</a>
+          
+        </div>
+      
 
       
       
@@ -360,8 +379,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/26/KtSQL的BitmapInvertedIndex/" rel="next" title="KtSQL的BitmapInvertedIndex">
-                <i class="fa fa-chevron-left"></i> KtSQL的BitmapInvertedIndex
+              <a href="/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/" rel="next" title="hfile, parquet, orcfile, carbondata and indexr">
+                <i class="fa fa-chevron-left"></i> hfile, parquet, orcfile, carbondata and indexr
               </a>
             
           </div>
@@ -370,8 +389,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/15/MySQL协议流程笔记/" rel="prev" title="MySQL协议流程笔记">
-                MySQL协议流程笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/05/spark-thrift-server/" rel="prev" title="Spark thrift-server">
+                Spark thrift-server <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="OLTP,OLAP,Hadoop,hfile,parquet,orcfile,carbondata,indexr,">
 
 
 
@@ -94,14 +94,18 @@
 
 
 
+<meta name="description" content="目录 OLTP和OLAP的核心区别 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录">
+<meta name="keywords" content="OLTP,OLAP,Hadoop,hfile,parquet,orcfile,carbondata,indexr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tephra与Percolator">
-<meta property="og:url" content="https://ktsql.github.io/2018/12/02/Tephra与Percolator/index.html">
+<meta property="og:title" content="hfile, parquet, orcfile, carbondata and indexr">
+<meta property="og:url" content="https://ktsql.github.io/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/index.html">
 <meta property="og:site_name" content="KtSQL的呢喃">
+<meta property="og:description" content="目录 OLTP和OLAP的核心区别 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-15T03:34:50.907Z">
+<meta property="og:updated_time" content="2019-01-05T03:40:51.586Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tephra与Percolator">
+<meta name="twitter:title" content="hfile, parquet, orcfile, carbondata and indexr">
+<meta name="twitter:description" content="目录 OLTP和OLAP的核心区别 Hadoop体系下的各种存储格式的简介 KtSQL如何做出自己的选择 附录">
 
 
 
@@ -130,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://ktsql.github.io/2018/12/02/Tephra与Percolator/">
+  <link rel="canonical" href="https://ktsql.github.io/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/">
 
 
 
 
 
-  <title>Tephra与Percolator | KtSQL的呢喃</title>
+  <title>hfile, parquet, orcfile, carbondata and indexr | KtSQL的呢喃</title>
   
 
 
@@ -269,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/02/Tephra与Percolator/">
+    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="principality">
@@ -286,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Tephra与Percolator</h1>
+          <h1 class="post-title" itemprop="name headline">hfile, parquet, orcfile, carbondata and indexr</h1>
         
 
         <div class="post-meta">
@@ -298,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-02T15:04:01+08:00">
-                2018-12-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-23T23:43:43+08:00">
+                2018-12-23
               </time>
             
 
@@ -336,7 +340,13 @@
       
 
       
-        
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>OLTP和OLAP的核心区别</li>
+<li>Hadoop体系下的各种存储格式的简介</li>
+<li>KtSQL如何做出自己的选择</li>
+<li>附录</li>
+</ul>
+
       
     </div>
     
@@ -351,6 +361,26 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/OLTP/" rel="tag"># OLTP</a>
+          
+            <a href="/tags/OLAP/" rel="tag"># OLAP</a>
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+            <a href="/tags/hfile/" rel="tag"># hfile</a>
+          
+            <a href="/tags/parquet/" rel="tag"># parquet</a>
+          
+            <a href="/tags/orcfile/" rel="tag"># orcfile</a>
+          
+            <a href="/tags/carbondata/" rel="tag"># carbondata</a>
+          
+            <a href="/tags/indexr/" rel="tag"># indexr</a>
+          
+        </div>
+      
 
       
       
@@ -360,8 +390,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/26/KtSQL的BitmapInvertedIndex/" rel="next" title="KtSQL的BitmapInvertedIndex">
-                <i class="fa fa-chevron-left"></i> KtSQL的BitmapInvertedIndex
+              <a href="/2018/12/15/MySQL协议流程笔记/" rel="next" title="MySQL协议流程笔记">
+                <i class="fa fa-chevron-left"></i> MySQL协议流程笔记
               </a>
             
           </div>
@@ -370,8 +400,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/15/MySQL协议流程笔记/" rel="prev" title="MySQL协议流程笔记">
-                MySQL协议流程笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/31/写在2019年即将来临之际/" rel="prev" title="写在2019年即将来临之际">
+                写在2019年即将来临之际 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -424,8 +454,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/img/favicon.ico" alt="principality">
           <p class="site-author-name" itemprop="name">principality</p>
@@ -476,6 +515,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

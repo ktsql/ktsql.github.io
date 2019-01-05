@@ -95,12 +95,12 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Ktsql的小窝">
+<meta property="og:title" content="KtSQL的呢喃">
 <meta property="og:url" content="https://ktsql.github.io/index.html">
-<meta property="og:site_name" content="Ktsql的小窝">
+<meta property="og:site_name" content="KtSQL的呢喃">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ktsql的小窝">
+<meta name="twitter:title" content="KtSQL的呢喃">
 
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <title>Ktsql的小窝</title>
+  <title>KtSQL的呢喃</title>
   
 
 
@@ -173,7 +173,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Ktsql的小窝</span>
+        <span class="site-title">KtSQL的呢喃</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -270,7 +270,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/15/MySQL协议流程笔记/">
+    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2019/01/05/spark-thrift-server/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="principality">
@@ -279,7 +279,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
+      <meta itemprop="name" content="KtSQL的呢喃">
     </span>
 
     
@@ -289,7 +289,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/15/MySQL协议流程笔记/" itemprop="url">MySQL协议流程笔记</a></h1>
+                <a class="post-title-link" href="/2019/01/05/spark-thrift-server/" itemprop="url">Spark thrift-server</a></h1>
         
 
         <div class="post-meta">
@@ -301,8 +301,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T11:35:52+08:00">
-                2018-12-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-05T10:41:17+08:00">
+                2019-01-05
               </time>
             
 
@@ -389,6 +389,406 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/31/写在2019年即将来临之际/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="principality">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/favicon.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KtSQL的呢喃">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/31/写在2019年即将来临之际/" itemprop="url">写在2019年即将来临之际</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-31T22:53:09+08:00">
+                2018-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>新的一年又即将来到，盘点今年的开源进度，感触良多。</p>
+<p>KtSQL最早开始于2016年，当时还记得只有一点MySQL分库分表中间件的开发基础，对分布式事务数据库领域只能算是懵懵懂懂。萌生开发一个分布式事务数据库的原因，是因为在大数据系统应用开发过程中，反复感觉到所谓大数据，无非是把数据库从单机或小规模集群往分布式系统发展的过程。既然如此，为什么不直接做一个分布式数据库呢？</p>
+<p>一晃眼两年过去，大数据领域果然出现了NewSQL的潮流，也开始出现了数据中台的概念。引发这个趋势的，不光是自然而然的信息化复杂度增加，还在于除了结果数据外，过程数据也开始被重视起来，而且出现了过程数据与结果数据的融合协同趋势。</p>
+<p>从商业领域角度观察，信息化水平的提升，对于克服规模效应带来的效率不足问题，有着颠覆性的价值。中国的经济规模，互联网技术带来跨地域经济协作，都是这一方向的良好温床，而一带一路带来的全球化效应，更是为进一步发展打下良好基础。大势如此，必然会导致一个个的独立个体加入到各种的经济联系体中，而经济联系体天生有需求往规模化发展。</p>
+<p>既然规模化是大趋势，那么信息化的复杂度必然不断提升，必然带来更多的信息化系统。这些信息化系统都需要数据库，而且通过数据库来完成信息化系统之间的协同工作，成本远低于现在所谓的微服务系统。</p>
+<p>而且，随着机器学习、深度学习、人工智能领域的科研持续发展，数据的应用已经不仅仅局限于结果的保存，过程数据的监控、分析、处理，把数据应用带到了一个新的高度。能不能通过读取计算用户在多个系统之间的操作行为，判断出用户的当前意图，为下一步的用户响应做出恰如其分的应对？这就是下一步分布式事务数据库的发展方向。</p>
+<p>KtSQL将迎着未来的方向持续进步，坚持不懈。也必然会在开源的路上奏出强音！</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="principality">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/favicon.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KtSQL的呢喃">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/23/hfile-parquet-orcfile-carbondata-and-indexr/" itemprop="url">hfile, parquet, orcfile, carbondata and indexr</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-23T23:43:43+08:00">
+                2018-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>OLTP和OLAP的核心区别</li>
+<li>Hadoop体系下的各种存储格式的简介</li>
+<li>KtSQL如何做出自己的选择</li>
+<li>附录</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/15/MySQL协议流程笔记/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="principality">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/favicon.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KtSQL的呢喃">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/15/MySQL协议流程笔记/" itemprop="url">MySQL协议流程笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-15T11:35:52+08:00">
+                2018-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>MySQL协议支持的思考</li>
+<li>MySQL协议相关技术介绍</li>
+<li>KtSQL的MySQL协议实现</li>
+<li>附录</li>
+</ul>
+<h2 id="MySQL协议支持的思考"><a href="#MySQL协议支持的思考" class="headerlink" title="MySQL协议支持的思考"></a>MySQL协议支持的思考</h2><p>随着互联网的发展，MySQL毫无疑问已经成为OLTP的标准，这个从DB Engine Rank的排名就可以轻易看出来。这是一个很有意思的现象，开源技术如果可以伴随新行业的发展而成长，则可以长大到一个无可估量的高度。闲话扯一下，做开源的各位，是不是应该考虑一下和新趋势结合一下，成为新趋势的推动力呢？</p>
+<p>数据库的迁移成本是昂贵的，这也是为什么去IOE这么困难的原因。虽然节约成本是每个客户都希望得到的，但是应用对数据库的深度依赖让迁移成本远高于节约的成本，导致数据库无法迁移。如果无法迁移意味着技术落后，这将是难以忍受的结果。</p>
+<p>支持MySQL协议正是基于这样的想法而坚定下来的。降低迁移成本，让原有的数据库使用者可以低成本迁移到KtSQL，是兼容MySQL协议的意义。</p>
+<h2 id="MySQL协议相关技术介绍"><a href="#MySQL协议相关技术介绍" class="headerlink" title="MySQL协议相关技术介绍"></a>MySQL协议相关技术介绍</h2><p>分布式数据库一直依赖都存在两个实现方向。一个是在原有的数据库系统基础上，通过替换底层的存储引擎，通过存储引擎的分布式实现完成原有单机系统升级为分布式系统的改造，Amazon的Aurora就是典型例子；另一个是在SQL引擎层，实现对MySQL协议的支持，过往许多的MySQL分布式中间件都是采用这种方式。</p>
+<p>KtSQL选择的是后一种方式，出于以下几点考虑：</p>
+<ul>
+<li>为将来可能支持其他的协议做准备，Oracle、Postgres、SQL Server等</li>
+<li>突破数据库引擎的局限，为SQL引擎的创新做准备，如引入UDF</li>
+</ul>
+<p>从技术上来说，MySQL协议是一个TCP协议解包分发处理的逻辑，核心的两块是TCP服务和协议解包，这些都有成熟的类库支持，只需要认真仔细结合MySQL协议实现即可。</p>
+<h2 id="KtSQL的MySQL协议实现"><a href="#KtSQL的MySQL协议实现" class="headerlink" title="KtSQL的MySQL协议实现"></a>KtSQL的MySQL协议实现</h2><p>KtSQL Tcp服务底层使用Vertx框架，这是出于Vertx的高性能和Kotlin支持而选择的。协议解包则采用手写的方式实现，适当参考了第三方实现的代码。MySQL协议的命令并没有考虑全部支持，这不仅仅因为工作量的原因，还因为底层引擎实现差异，导致某些MySQL命令支持是缺乏基础的。MySQL协议支持的目标是对常用的语句进行支持，让基于MySQL标准协议开发的应用“无缝”切换过来，如JDBC应用。</p>
+<p>虽然底层的SQL解析用Calcite实现，但是部分MySQL语句，Calcite并不支持，需要对SQL协议解析进行增强。对此需求，引入了协议解析库。在协议解析上尝试了jparsec和parboiled两个库，最终选择了jparsec，原因是jparsec的解析器构建速度比parboiled快。用小规模样例测试的方法，得知jparsec和parboiled两者解析速度基本持平，在解析器构建环节，jparsec则因为其实现简单所以速度比parboiled要快不少。考虑到OLTP高并发的需求，速度的提升还是很重要的一个因素。</p>
+<p>MySQL命令实现的测试方法是采用MySQL JDBC Driver和服务端交互，测试是否能够支持所需命令。主要的交互流程为：</p>
+<ul>
+<li>客户端连接，服务器主动发出握手包</li>
+<li>客户端响应握手包，发出身份认证包，服务器认证通过后，发出确认结果</li>
+<li>上述过程完成后，双方进入命令包的交互阶段</li>
+<li>MySQL JDBC Driver在交互阶段会先查询服务器参数，并设置服务端参数，完成后才会进入到编码可控制的命令部分</li>
+<li>双方完成交互后，客户端主动关闭，双方通信结束</li>
+</ul>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="https://mariadb.com/kb/en/library/0-packet/" target="_blank" rel="noopener">Mariadb协议解析</a></li>
+<li><a href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html" target="_blank" rel="noopener">MySQL client/server protocol</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/12/02/Tephra与Percolator/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -398,7 +798,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
+      <meta itemprop="name" content="KtSQL的呢喃">
     </span>
 
     
@@ -495,917 +895,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/11/26/KtSQL的BitmapInvertedIndex/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="principality">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/img/favicon.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/26/KtSQL的BitmapInvertedIndex/" itemprop="url">KtSQL的BitmapInvertedIndex</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-26T00:04:31+08:00">
-                2018-11-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>引入Bitmap倒排索引</li>
-<li>BitmapInvertedIndex</li>
-<li>KtSQL的实现思路</li>
-<li>附录</li>
-</ul>
-<h2 id="引入Bitmap倒排索引"><a href="#引入Bitmap倒排索引" class="headerlink" title="引入Bitmap倒排索引"></a>引入Bitmap倒排索引</h2><p>多维查询支持对于复杂化查询是一项必备的功能，KtSQL在设计时，则把复杂化查询作为一项核心特性考虑到系统实现中。对于以实时小批量查询为主要应用场景的事务型数据库，bitmap索引自然成为首选的对象之一。</p>
-<p>复杂查询中，bitmap支持对某类对象的特性进行查询，如查询符合某些过滤条件的物品。bitmap还可以对多个集合间的关系进行处理，如进行or或and处理。bitmap还支持如TopN、contains、Total等操作，对于计算下推，这些功能都有极大的帮助。</p>
-<p>不同于bitmap是把多个维度值作为一个单值进行编码，倒排索引对每一个column的值进行编码。倒排索引帮忙我们把每一个列(column)的取值映射到编码后，建立起取值编码和对应的rowkey位置的关系。通过bitmap计算，即可快速得出取值对应的rowkey值。</p>
-<h2 id="BitmapInvertedIndex"><a href="#BitmapInvertedIndex" class="headerlink" title="BitmapInvertedIndex"></a>BitmapInvertedIndex</h2><p>BitmapInvertedIndex在OLAP是较常见的，业界有名的案例是apache druid, linkedin pinot。</p>
-<p>Pinot BitmapInvertedIndex的实现细节描述如下：</p>
-<ol>
-<li>使用roaringbitmap作为底层的实现支持</li>
-<li>数据保存在文件上，inverted index存储的方式：|1st start|1st end|2nd end|…|data for 1st bitmap|data for 2nd bitmap|…</li>
-<li>支持保存在OnHeap和OffHeap，接口提供了addSingleColumn和addMultiColumn，参数为docId和dictId</li>
-<li>每一个column会创建一个InvertedIndexCreator，以OnHeapBitmapInvertedIndexCreator为例</li>
-<li>每个OnHeapBitmapInvertedIndexCreator包含一个MutableRoaringBitmap[]，用来保存每个column的bitmap array</li>
-<li>MutableRoaringBitmap支持serialize写到stream</li>
-</ol>
-<h2 id="KtSQL的实现思路"><a href="#KtSQL的实现思路" class="headerlink" title="KtSQL的实现思路"></a>KtSQL的实现思路</h2><p>参考Pinot的实现，先实现OnHeap模式，创建inverted index时，每个column创建一个bitmapInvertedIndex，采取实时构建的方式，通过适当牺牲入库的性能，避免复杂化数据的查询步骤，流程如下：</p>
-<ul>
-<li>将rowkey映射到array index中，把rowkey编码成唯一值，如取值为long，可以容纳 2^64 的数值</li>
-<li>不允许对建立了位图倒排索引的数据记录进行删除，也不允许对rowkey进行修改</li>
-<li>将每一个column的取值进行编码（依赖全局字典），对该取值维护一个队列，记录该值所在的rowkey对应的long值</li>
-<li>因为每个取值都会消耗掉一个array，所以column的取值越多，存储空间消耗越大。所以有观点提出column取值应该在10万以下，过多则不适合建立bitmap索引。</li>
-<li>全局字典表在分布式环境下，面临一个同步的问题，构建全局字典表。需考虑算法上支持特定值的编码在不同环境下取值一致是否可行，否则就需要用强一致的共享内存进行编码同步处理。</li>
-<li>位图倒排索引的数据保存在hbase中。在分布式环境下不同节点都需要访问同一份位图倒排索引，也需要维护数据和位图倒排索引的强一致性。这种处理方法也可避免在内存中过大。</li>
-</ul>
-<p>实时入库，会面临rowkey动态增加和column值编码持续增加的情况，也要面对分布式环境下编码一致性的问题</p>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
-<li><a href="https://hexiaoqiao.github.io/blog/2016/11/27/exact-count-and-global-dictionary-of-apache-kylin/" target="_blank" rel="noopener">Apache Kylin精确计数与全局字典揭秘</a></li>
-<li><a href="http://druid.io/blog/2012/09/21/druid-bitmap-compression.html" target="_blank" rel="noopener">Maximum Performance with Minimum Storage: Data Compression in Druid</a></li>
-<li><a href="https://github.com/RoaringBitmap/RoaringFormatSpec/" target="_blank" rel="noopener">RoaringFormatSpec : specification of the compressed-bitmap Roaring format</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/11/16/Calcite的ModificationRel/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="principality">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/img/favicon.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/16/Calcite的ModificationRel/" itemprop="url">Calcite的ModificationRel</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T21:50:56+08:00">
-                2018-11-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>Calcite实现DML操作的概述</li>
-<li>Calcite DML操作的详解</li>
-<li>Calcite DML的性能及优化思路</li>
-<li>附录</li>
-</ul>
-<h2 id="Calcite实现DML操作的概述"><a href="#Calcite实现DML操作的概述" class="headerlink" title="Calcite实现DML操作的概述"></a>Calcite实现DML操作的概述</h2><p>Calcite使用javacc生成语法解析器，javacc和freemaker模版技术为解析器的自定义提供了可能，SQL语句经过解析后，生成SqlNode，然后通过convertQuery转换成RelNode。RelNode用于表达逻辑表达式，也用于优化执行树，最后的RelNode逻辑树生成后，转成Expression(Node)，Expression具备转换成java代码的能力，然后再通过JinanoCompiler转换成字节码执行。这是三次解析一次编译的执行过程。</p>
-<p>SqlNode转换成RelNode的时候，会补充上下文，所以RelNode包含丰富的相关信息，可用于执行计划的优化。但是RelNode转换成Expression时，很多上下文信息是无用的，会被丢弃。</p>
-<p>Calcite内置了EnumerableConvention用于实现SQL的查询语句，Expression在转换成java代码时，使用Enumerable表达SQL语句的相关操作，对于不能全面支持SQL操作的adaptor，借助转换成Enumerable，是保证adaptor能全面支持SQL操作的关键。那么存储层只需要实现数据读写即可满足SQL的DML操作。</p>
-<h2 id="Calcite-DML操作的详解"><a href="#Calcite-DML操作的详解" class="headerlink" title="Calcite DML操作的详解"></a>Calcite DML操作的详解</h2><h3 id="DML相关功能对应模块"><a href="#DML相关功能对应模块" class="headerlink" title="DML相关功能对应模块"></a>DML相关功能对应模块</h3><p>概述环节对主要流程进行了描述，现对各流程中，DML操作的过程使用到的模块进行说明。</p>
-<p>ModifiableTable赋予了Table查询和修改的能力，ModifiableTable继承QueryableTable，Queryable继承Enumerable，Queryable提供了数据的查询能力。也就是说，当需要select的时候，QueryableTable会被调用；而insert/update/delete时，ModifiableTable会被调用。</p>
-<h3 id="查询select的实现流程"><a href="#查询select的实现流程" class="headerlink" title="查询select的实现流程"></a>查询select的实现流程</h3><p>在查询(select)时，有两种查询数据的方法，分别是：Schemas.queryable和Schemas.enumerable</p>
-<p>Schemas.queryable会调用table.asQueryable，把需要查询的数据转换成Enumerable，这时的操作，需要table adaptor实现接口table.asQueryable</p>
-<p>Schemas.enumerable会调用table.scan，把数据从table中读出来，这时的操作，需要table adaptor实现接口table.scan</p>
-<p>具体采用哪种(queryable/enumerable)转换的方式，是在RelOptTableImpl.getClassExpressionFunction中实现的，做计划优化的时候(Prepare.optimize)，RelNode.optimize会调用RelOptTableImpl.create，RelOptTableImpl.create会调用RelOptTableImpl.getClassExpressionFunction来完成转化，queryable此时调用getExpression作为参数传给RetOptTableImpl，而enumerable调用Schemas.tableExpression</p>
-<h3 id="修改操作的实现流程"><a href="#修改操作的实现流程" class="headerlink" title="修改操作的实现流程"></a>修改操作的实现流程</h3><p>在修改时，Insert语句从SqlNode转换到RelNode，再转换到Expression。</p>
-<ul>
-<li><p>parseQuery</p>
-<ul>
-<li>values(…)在sql parse的时候，会被转换成为row(…)，表示一个结构体类型</li>
-</ul>
-</li>
-<li><p>convertQuery</p>
-<ul>
-<li>validate，SqlValidatorImpl会执行操作值数量检查checkFieldCount、操作值类型检查checkTypeAssignment、约束检查checkConstraint、权限检查validateAccess，依赖adaptor getRowType的实现</li>
-<li>convert，convertInsert会调用createModify，toModificationRel被调用，用于获取adaptor的上下文并保存到RelNode中。KtSQL只需要获得table的实例即可包含所需的上下文</li>
-<li>optimize，convert返回的是LogicTableModify，经过optimize后，变成了EnumerableTableModify。optimize会把传进去的RelNode都转成EnumerableRel，才能和下一环节的implement对接</li>
-</ul>
-</li>
-<li><p>implement</p>
-<ul>
-<li>EnumerableInterpretable.toBindable被调用，Calcite系统允许提供多个Implementor，且每个Implementor对节点的解析机制可以不一样，默认的实现是EnumerableInterpretable。通过遍历每一个节点的implement，生成Bindable返回。</li>
-<li>RelNode需要被转换为Bindable执行，Bindable继承InterpretableRel，包含implement接口，实现该接口的Bindable，可以返回Java代码。EnumerableTableModify.implement就是代码生成的一个例子，根据需要调用的函数，输出相应的字符串。</li>
-<li>Bindable的子类包括有：BindableAggregate, BindableFilter, BindableProject, BindableJoin, BindableSort, BindableTableScan, BindableUnion, BindableValues, BindableWindow, EnumerableBindable, EnumerableInterpretable. 所以可以需要实现代码输出的子类是可控的，可实现的。</li>
-</ul>
-</li>
-</ul>
-<h3 id="toModificationRel"><a href="#toModificationRel" class="headerlink" title="toModificationRel"></a>toModificationRel</h3><p>RelNode在SqlToRelConverter的过程中，需要根据SqlNode的输入，生成特定的RelNode，adaptor的接口，需要按RelNode的需要，提供相关的信息。遗憾的是，这部分的说明，Calcite官方并没有给出很好的文档指引。</p>
-<p>toModificationRel会生成TableModify，在SqlToRelConverter中被调用，用于获取相关的上下文并保存到RelNode中，Interpreter调用TableModify最终会转换为EnumerableTableModify，并且在转换成执行的binary code时，调用getModifiableCollection()</p>
-<p>TableModify是RelNode的子类，用于把DML操作转换为Enumerable操作，并实现了TableModify转换到Expression的逻辑。</p>
-<p>继承于TableModify的EnumerableTableModify和JdbcTableModify，都实现了implement接口，但是两者的含义一样，实现并不一样。EnumerableTableModify扩展于EnumerableRel，但JdbcTableModify扩展于JdbcRel。</p>
-<p>Calcite对语法树的解析，支持通过实现RelImplementor接口，来获得不同的implementor的能力，在系统中，现在有两个实现，分别是JavaRelImplementor和EnumerableRelImplementor，</p>
-<h2 id="Calcite-DML的性能及优化思路"><a href="#Calcite-DML的性能及优化思路" class="headerlink" title="Calcite DML的性能及优化思路"></a>Calcite DML的性能及优化思路</h2><p>在现代计算机的单核CPU上，Calcite解析转换一条DML操作的耗时为毫秒级，对于需要复杂计算的select语句，转换的耗时是很小的。对于KtSQL的分布式架构来说，Calcite的SQL解析处理并不会成为瓶颈，反而是Enumerable的计算能力受限于CPU和内存。</p>
-<p>单机的数据库系统，受限于单机的计算机架构，只能满足百万级数据的快速处理。JVM受限于其实现机制，千万级的数据处理就需要消耗上百G的内存，如果要把计算能力提升到十亿级别，则对计算能力的优化提出了极大的挑战。数据量越小，主键和二次索引对操作的影响越大。随着数据量的上升，则基于二次索引和范围处理的优化显得越发重要。Spark tungsetn、Kylin的RoaringBitmapIndex、SnappyData的基数引擎，都是计算优化的极好案例。Enumerable的优化有多种思路，比如支持网络堆外内存读取、堆外内存计算、异构计算加速，都可以有效提升计算的能力。这是将来可以优化的方向，而且其优化的思路与最终需适应的场景息息相关。</p>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
-<li><a href="http://calcite.apache.org/docs/adapter.html#built-in-sql-implementation" target="_blank" rel="noopener">Apache Calcite built in sql implementation</a></li>
-<li><a href="https://arxiv.org/pdf/1802.10233.pdf" target="_blank" rel="noopener">Apache Calcite: A Foundational Framework for Optimized Query Processing Over Heterogeneous Data Sources</a></li>
-<li><a href="https://events.static.linuxfound.org/sites/events/files/slides/ApacheCon2016ChristianTzolov.v4.pdf" target="_blank" rel="noopener">Apache Calcite for Enabling SQL Access to NoSQL Data Systems</a></li>
-<li><a href="https://github.com/Stratio/cassandra-lucene-index" target="_blank" rel="noopener">Stratio’s Cassandra Lucene Index</a></li>
-<li><a href="https://databricks.com/blog/2015/04/28/project-tungsten-bringing-spark-closer-to-bare-metal.html" target="_blank" rel="noopener">Project Tungsten: Bringing Apache Spark Closer to Bare Metal</a></li>
-<li><a href="https://blog.bcmeng.com/post/kylin-distinct-count-global-dict.html" target="_blank" rel="noopener">Apache Kylin 精确去重和全局字典权威指南</a></li>
-<li><a href="http://cidrdb.org/cidr2017/papers/p28-mozafari-cidr17.pdf" target="_blank" rel="noopener">SnappyData: A Uniﬁed Cluster for Streaming, Transactions, and Interactive Analytics</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/11/11/Calcite的SQL类型表达机制/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="principality">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/img/favicon.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/11/Calcite的SQL类型表达机制/" itemprop="url">Calcite的SQL类型表达机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-11T11:24:45+08:00">
-                2018-11-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>分布式数据库与系统设计</li>
-<li>在KtSQL中拓展一个类型的支持</li>
-<li>Calcite的类型系统设计思路</li>
-</ul>
-<h2 id="分布式数据库与系统设计"><a href="#分布式数据库与系统设计" class="headerlink" title="分布式数据库与系统设计"></a>分布式数据库与系统设计</h2><p>对数据的处理，如果需要在应用层考虑底层的分布模型及实现，就会造成应用层的复杂度上升。比如，把汽车的位置存储到分布式数据库中，并获取距离A点最近的100辆汽车，把数据库里面所有的数据取出来计算，这样的做法是不可取的。分布式数据库除应当解决数据规模带来的存储挑战外，还应该简化数据的处理模型。</p>
-<p>在上述的例子中，把坐标转换成可以计算的数据类型，并以此类型作为检索主键，将会大大加速处理的速度。我们知道，用GEOHASH可以把多维坐标位置转换成单值并作为主键，可以获得很好的数据处理速度。</p>
-<p>由此可见，要在大规模数据的前提下，获得良好的数据处理能力，我们需要以下元素：</p>
-<ul>
-<li>可以把数据转换成底层系统可以处理的数值类型</li>
-<li>支持对数值类型的索引，以便提升处理的速度</li>
-<li>底层系统支持分布式处理的计算能力，从而获得计算能力的提升</li>
-</ul>
-<h2 id="在KtSQL中拓展一个类型的支持"><a href="#在KtSQL中拓展一个类型的支持" class="headerlink" title="在KtSQL中拓展一个类型的支持"></a>在KtSQL中拓展一个类型的支持</h2><p>KtSQL通过以下三个设计来获得良好的数据处理能力：</p>
-<ul>
-<li>在SQL引擎层支持自定义函数，可以实现数据类型的转换</li>
-<li>支持主键索引、二次索引的机制</li>
-<li>通过对存储层计算下推能力的扩展，获得分布式处理能力</li>
-</ul>
-<p>引擎层支持的数值类型，直接影响着下层的具体实现。下面对SQL引擎层Calcite的类型系统设计思路进行阐述，以满足将来可能需要的各种扩展。</p>
-<h2 id="Calcite的类型系统设计思路"><a href="#Calcite的类型系统设计思路" class="headerlink" title="Calcite的类型系统设计思路"></a>Calcite的类型系统设计思路</h2><p>Calcite支持SQL2003中定义的数值类型。KtSQL前端现采取兼容MySQL协议的方式实现，也就意味着Calcite的类型系统需要具备从MySQL类型转换到Calcite类型的能力。同时，下层存储以Binary格式进行存储，不具备类型能力，这意味着Calcite的类型系统能够进行类型转换，并且具备元数据的能力。Calcite用Java实现，如果要实现类型转换成到runtime可以处理的类型，还需具备转换到Java类型系统的能力。</p>
-<p>Calcite使用以下类来表达类型系统：</p>
-<ul>
-<li>SqlLiteral：在解析SQL语句的过程中，用来表达类型的类。</li>
-<li>SqlTypeName：SQL语句中支持的类型，SQL2003标准中，列举的需要支持的类型超过了Java语言中定义的SQL基础类型。</li>
-<li>SqlTypeFamily：SqlType类型分类的枚举，定义了支持的类型分类。支持JdbcType里面的类型与SqlType进行相互转换。</li>
-<li>RelDataTypeSystem：类型描述类系统，SqlTypeName的辅助类，如获取精度、长度、是否自增等属性。</li>
-<li>RelDataType：类型描述类，用于描述一个算式或查询返回的一行的类型，即可以用于描述一个或多个的SqlType。RelDataType支持持久化，支持枚举组成RelDataType的每一个元素的类型。</li>
-<li>RelDataTypeFactory：类型描述类工厂，支持从一个Clazz获取对应的RelDataType，支持从SqlType转换为RelDataType。</li>
-</ul>
-<p>RelDataType是类型的描述类，借助TypeSystem、TypeName、TypeFamily，RelDatType获得了元数据的能力，通过RelDataTypeFactory，可以实现不同的类型转换。SqlLiteral是SQL描述，提供了变量的最初的信息。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/11/03/分布式数据库的DDL实现/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="principality">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/img/favicon.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/03/分布式数据库的DDL实现/" itemprop="url">分布式数据库的DDL实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-03T17:24:22+08:00">
-                2018-11-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>DDL在线操作的场景</li>
-<li>DDL在线操作实现的思路</li>
-<li>补充材料</li>
-<li>附录</li>
-</ul>
-<h2 id="DDL在线操作的场景"><a href="#DDL在线操作的场景" class="headerlink" title="DDL在线操作的场景"></a>DDL在线操作的场景</h2><p>最近在考虑KtSQL的索引实现，涉及到在线索引新建的思考。<br>如果要求系统在表创建时，就建立合理的索引格式，这是不符合实际情况的。所以索引建立存在运行后重建的需求。</p>
-<p>索引的重建需要允许在线，对一个大规模的在线服务系统而言，停机是不允许的。</p>
-<h2 id="DDL在线操作实现的思路"><a href="#DDL在线操作实现的思路" class="headerlink" title="DDL在线操作实现的思路"></a>DDL在线操作实现的思路</h2><h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><ul>
-<li>数据一致性</li>
-<li>并发操作</li>
-<li>性能</li>
-</ul>
-<h3 id="数据一致性"><a href="#数据一致性" class="headerlink" title="数据一致性"></a>数据一致性</h3><p>索引建立过程中，如果允许数据变更（DELETE、UPDATE、INSERT），会导致索引和数据的不一致性，<br>所以数据库的常规做法，是对需要建立索引的表进行锁定，只允许查询，直到索引建立完毕后，才允许解除锁定。</p>
-<h3 id="并发操作"><a href="#并发操作" class="headerlink" title="并发操作"></a>并发操作</h3><p>既然要实现DDL在线操作，分布式的环境下，必须要考虑操作的并发性，最直接的做法自然是操作串行。<br>对一个表进行串行修改，可以用锁机制来实现。</p>
-<p>不同于DML可以采用MVCC和统一事务服务做隔离，DDL会对分布节点都产生影响。所以DDL操作时，<br>需要获得操作目标的锁才能进行操作。</p>
-<p>锁的粒度决定了运行的性能，如只需要锁定元数据而不需要对表进行锁定，但是也不必过度追求并发，<br>如对表先拷贝后全量处理，再锁定原表增量处理的做法，就是很消耗资源的做法。</p>
-<p>元数据和表数据可以分离，好处是对元数据锁定并进行操作时，DML依然可以运行。</p>
-<p>HBase对表进行操作的时候，会先disable table。这个过程会关闭掉所有region server的handler，<br>HBase对元数据操作的方式，影响到并发操作的具体实现。</p>
-<p>MySQL采用分级锁机制对数据请求进行分级：</p>
-<ul>
-<li>LOCK=NONE: Permits concurrent queries and DML.</li>
-<li>LOCK=SHARED: Permits concurrent queries but blocks DML.</li>
-<li>LOCK=DEFAULT: Permits as much concurrency as possible (concurrent queries, DML, or both). </li>
-<li>LOCK=EXCLUSIVE: Blocks concurrent queries and DML.</li>
-</ul>
-<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>假如需要对10亿的数据进行索引创建，共100个节点，则单个节点需要处理对千万级数据进行处理。<br>同时要生成10亿的数据记录，引发的网络通信和读写操作都将是很大的消耗。</p>
-<h2 id="补充材料"><a href="#补充材料" class="headerlink" title="补充材料"></a>补充材料</h2><h3 id="MySQL-DDL的锁级别"><a href="#MySQL-DDL的锁级别" class="headerlink" title="MySQL DDL的锁级别"></a>MySQL DDL的锁级别</h3><p>假设要进行DDL，必须要执行锁的话，哪一种锁级别是在保证逻辑正确性的前提下性能最好的？MySQL整理了一些可以参考的思路。</p>
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In-Place?</th>
-<th>Copies Table?</th>
-<th>Allows Concurrent DML?</th>
-<th>Allows Concurrent Query?</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>添加索引</td>
-<td>Yes*</td>
-<td>No*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>对全文索引的一些限制</td>
-</tr>
-<tr>
-<td>删除索引</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>仅修改表的元数据</td>
-</tr>
-<tr>
-<td>OPTIMIZE TABLE</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>从 5.6.17开始使用ALGORITHM=INPLACE，当然如果指定了old_alter_table=1或mysqld启动带–skip-new则将还是COPY模式。如果表上有全文索引只支持COPY</td>
-</tr>
-<tr>
-<td>对一列设置默认值</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>仅修改表的元数据</td>
-</tr>
-<tr>
-<td>对一列修改auto-increment 的值</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>仅修改表的元数据</td>
-</tr>
-<tr>
-<td>添加 foreign key constraint</td>
-<td>Yes*</td>
-<td>No*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>为了避免拷贝表，在约束创建时会禁用foreign_key_checks</td>
-</tr>
-<tr>
-<td>删除 foreign key constraint</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>foreign_key_checks 不影响</td>
-</tr>
-<tr>
-<td>改变列名</td>
-<td>Yes*</td>
-<td>No*</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>为了允许DML并发, 如果保持相同数据类型，仅改变列名</td>
-</tr>
-<tr>
-<td>添加列</td>
-<td>Yes*</td>
-<td>Yes*</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作。当添加列是auto-increment，不允许DML并发</td>
-</tr>
-<tr>
-<td>删除列</td>
-<td>Yes</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
-</tr>
-<tr>
-<td>修改列数据类型</td>
-<td>No</td>
-<td>Yes*</td>
-<td>No</td>
-<td>Yes</td>
-<td>修改类型或添加长度，都会拷贝表，而且不允许更新操作</td>
-</tr>
-<tr>
-<td>更改列顺序</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
-</tr>
-<tr>
-<td>修改ROW_FORMAT和KEY_BLOCK_SIZE</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
-</tr>
-<tr>
-<td>设置列属性NULL或NOT NULL</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作</td>
-</tr>
-<tr>
-<td>添加主键</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>尽管允许 ALGORITHM=INPLACE ，但数据大幅重组，所以它仍然是一项昂贵的操作。如果列定义必须转化NOT NULL，则不允许INPLACE</td>
-</tr>
-<tr>
-<td>删除并添加主键</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>在同一个 ALTER TABLE 语句删除就主键、添加新主键时，才允许inplace；数据大幅重组,所以它仍然是一项昂贵的操作。</td>
-</tr>
-<tr>
-<td>删除主键</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>不允许并发DML，要拷贝表，而且如果没有在同一 ATLER TABLE 语句里同时添加主键则会收到限制</td>
-</tr>
-<tr>
-<td>变更表字符集</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>如果新的字符集编码不同，重建表</td>
-</tr>
-</tbody>
-</table>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="http://support.sas.com/resources/papers/proceedings13/072-2013.pdf" target="_blank" rel="noopener">SAS-Oracle Options and Efficiency: What You Don’t Know Can Hurt You</a></li>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-performance.html" target="_blank" rel="noopener">MySQL Online DDL Performance and Concurrency</a></li>
-<li><a href="http://punishzhou.iteye.com/blog/1258825" target="_blank" rel="noopener">HBase disable table的过程</a></li>
-<li><a href="http://www.dba-oracle.com/t_concurrent_dml_ddl.htm" target="_blank" rel="noopener">Concurrent DML &amp; DDL Tips</a></li>
-<li><a href="http://seanlook.com/2016/05/24/mysql-online-ddl-concept/" target="_blank" rel="noopener">mysql 5.6 原生Online DDL解析</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ktsql.github.io/2018/10/31/小窝安家/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="principality">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/img/favicon.ico">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/31/小窝安家/" itemprop="url">小窝安家</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T10:23:48+08:00">
-                2018-10-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>小窝安家，有了一个技术文章的笔记、分享、讨论的空间。<br>回想过去积累的在数据方向材料，无处安放，不免有点遗憾。幸好，只要开始做，总不会晚。</p>
-<p>下面给大家带来第一篇技术文章。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1447,7 +943,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1460,7 +956,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1502,7 +998,7 @@
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

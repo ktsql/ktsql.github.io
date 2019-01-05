@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="KtSQL,DDL,分布式数据库,索引,">
 
 
 
@@ -95,13 +95,14 @@
 
 
 <meta name="description" content="目录 DDL在线操作的场景 DDL在线操作实现的思路 补充材料 附录  DDL在线操作的场景最近在考虑KtSQL的索引实现，涉及到在线索引新建的思考。如果要求系统在表创建时，就建立合理的索引格式，这是不符合实际情况的。所以索引建立存在运行后重建的需求。 索引的重建需要允许在线，对一个大规模的在线服务系统而言，停机是不允许的。 DDL在线操作实现的思路约束 数据一致性 并发操作 性能  数据一致性索">
+<meta name="keywords" content="KtSQL,DDL,分布式数据库,索引">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式数据库的DDL实现">
 <meta property="og:url" content="https://ktsql.github.io/2018/11/03/分布式数据库的DDL实现/index.html">
-<meta property="og:site_name" content="Ktsql的小窝">
+<meta property="og:site_name" content="KtSQL的呢喃">
 <meta property="og:description" content="目录 DDL在线操作的场景 DDL在线操作实现的思路 补充材料 附录  DDL在线操作的场景最近在考虑KtSQL的索引实现，涉及到在线索引新建的思考。如果要求系统在表创建时，就建立合理的索引格式，这是不符合实际情况的。所以索引建立存在运行后重建的需求。 索引的重建需要允许在线，对一个大规模的在线服务系统而言，停机是不允许的。 DDL在线操作实现的思路约束 数据一致性 并发操作 性能  数据一致性索">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-03T10:11:22.546Z">
+<meta property="og:updated_time" content="2019-01-05T03:30:53.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式数据库的DDL实现">
 <meta name="twitter:description" content="目录 DDL在线操作的场景 DDL在线操作实现的思路 补充材料 附录  DDL在线操作的场景最近在考虑KtSQL的索引实现，涉及到在线索引新建的思考。如果要求系统在表创建时，就建立合理的索引格式，这是不符合实际情况的。所以索引建立存在运行后重建的需求。 索引的重建需要允许在线，对一个大规模的在线服务系统而言，停机是不允许的。 DDL在线操作实现的思路约束 数据一致性 并发操作 性能  数据一致性索">
@@ -139,7 +140,7 @@
 
 
 
-  <title>分布式数据库的DDL实现 | Ktsql的小窝</title>
+  <title>分布式数据库的DDL实现 | KtSQL的呢喃</title>
   
 
 
@@ -175,7 +176,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Ktsql的小窝</span>
+        <span class="site-title">KtSQL的呢喃</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -281,7 +282,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ktsql的小窝">
+      <meta itemprop="name" content="KtSQL的呢喃">
     </span>
 
     
@@ -547,6 +548,18 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/KtSQL/" rel="tag"># KtSQL</a>
+          
+            <a href="/tags/DDL/" rel="tag"># DDL</a>
+          
+            <a href="/tags/分布式数据库/" rel="tag"># 分布式数据库</a>
+          
+            <a href="/tags/索引/" rel="tag"># 索引</a>
+          
+        </div>
+      
 
       
       
@@ -643,7 +656,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -656,7 +669,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -714,7 +727,7 @@
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

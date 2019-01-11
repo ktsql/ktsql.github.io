@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="KtSQL的呢喃">
 <meta property="og:description" content="前言Spark Thrift Server是相当值得参考的技术。核心的内容包括有：  catalyst 高性能的优化器 sql core 分布式查询实现 hive 实现元数据管理，兼容hive thrift server 对hive jdbc的支持  这一套组合下来，就是一个完整的分布式OLAP查询实现。结合之前介绍的Hadoop存储体系，即可搭建完整的OLAP系统。 OLAP系统的研究，有几个值">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-05T16:43:41.061Z">
+<meta property="og:updated_time" content="2019-01-10T15:06:44.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark thrift-server">
 <meta name="twitter:description" content="前言Spark Thrift Server是相当值得参考的技术。核心的内容包括有：  catalyst 高性能的优化器 sql core 分布式查询实现 hive 实现元数据管理，兼容hive thrift server 对hive jdbc的支持  这一套组合下来，就是一个完整的分布式OLAP查询实现。结合之前介绍的Hadoop存储体系，即可搭建完整的OLAP系统。 OLAP系统的研究，有几个值">
@@ -358,8 +358,19 @@
 <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
 <li>catalyst</li>
 <li>sql-core</li>
-<li>hive</li>
 <li>thrift server</li>
+<li>hive</li>
+</ul>
+<h2 id="catalyst"><a href="#catalyst" class="headerlink" title="catalyst"></a>catalyst</h2><p>用于解析转换SQL语句，并生成逻辑计划。</p>
+<p>语法解析、计划生成可以算是基础功能。一些研究的方向是如何加速解析转换的速度，但总的来说，该环节对查询执行影响不大。KtSQL使用Calcite作为SQL的解析器。</p>
+<h2 id="sql-core"><a href="#sql-core" class="headerlink" title="sql-core"></a>sql-core</h2><p>查询计划执行器。把catalyst生成的逻辑计划，转换成Spark RDD操作。sql-core模块也提供了SQLContext，作为公共接口，SQLContext允许调用SQL语句并执行。</p>
+<h2 id="thrift-server"><a href="#thrift-server" class="headerlink" title="thrift server"></a>thrift server</h2><p>thrift server实现了HiveServer和客户端SQL CLI，通过JDBC/ODBC，可以连接到thrift server。假如我们通过UDFs, UDAFs, UDTFs扩展了hive，可以借助thrift server把请求提交到spark进行计算。</p>
+<p>Hive扩展，个人认为是拓展OLAP的关键切入点。数据应用也应该采用二次扩展的方式来实现，实现自然且使用简便。</p>
+<h2 id="hive"><a href="#hive" class="headerlink" title="hive"></a>hive</h2><p>实现了Hive的支持，对SQLContext进行了扩展，提供HiveContext作为接口。HiveContext允许用户使用HiveQL子集访问底层的数据。HiveContext访问数据时，使用的是Hive Metastore和Hive SerDes。HiveContext还允许进行二次拓展，通过Hive UDFs, UDAFs, and UDTFs的形式。</p>
+<p>SparkSQL可以使用hive udf，也可以使用自身机制支持的udf。如果是使用hive udf，需要通过hive metadata来注册管理。spark udf则按文档操作吧。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li><a href="https://marsishandsome.github.io/SparkSQL-Internal/" target="_blank" rel="noopener">SparkSQL Internal</a></li>
+<li><a href="https://github.com/allwefantasy/streamingpro" target="_blank" rel="noopener">MLSQL</a></li>
 </ul>
 
       
@@ -402,6 +413,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/10/大数据技能树/" rel="prev" title="大数据技能树">
+                大数据技能树 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -476,7 +491,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -489,7 +504,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -524,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">2.</span> <span class="nav-text">目录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">2.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#catalyst"><span class="nav-number">3.</span> <span class="nav-text">catalyst</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql-core"><span class="nav-number">4.</span> <span class="nav-text">sql-core</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thrift-server"><span class="nav-number">5.</span> <span class="nav-text">thrift server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hive"><span class="nav-number">6.</span> <span class="nav-text">hive</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">7.</span> <span class="nav-text">附录</span></a></li></ol></div>
             
 
           </div>
